@@ -1,0 +1,33 @@
+.title {
+    -fx-text-fill: #fefefe;
+    -fx-font-size: 26;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+.input {
+    -fx-background-color: #3c364c;
+    -fx-prompt-text-fill: #6f697d;
+    -fx-text-fill: #f9f8fe;
+    -fx-font-size: 15;
+}
+
+.button-sign-up {
+    -fx-background-color: #6d54b5;
+    -fx-font-size: 15;
+    -fx-text-fill: #fdfafd;
+    -fx-cursor: hand;
+}
+
+.normal-lable {
+    -fx-text-fill: #f9f8fe;
+}
+
+.button-text-login {
+    -fx-background-color: transparent;
+    -fx-text-fill: #c3bae3;
+    -fx-font-weight: bold;
+    -fx-underline: true;
+    -fx-cursor: hand;
+    -fx-padding: 0;
+}

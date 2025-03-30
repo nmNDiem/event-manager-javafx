@@ -1,0 +1,12 @@
+@font-face {
+    font-family: "Roboto";
+    src: url("../fonts/Roboto-VariableFont_wdth,wght.ttf");
+}
+
+.root {
+    -fx-font-family: "Roboto";
+    -fx-background-color: linear-gradient(to bottom, #2c2638, #2c263a);
+    -fx-padding: 20;
+}
+
+
