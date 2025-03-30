@@ -8,6 +8,7 @@ import com.ktpm.pojo.JdbcUtils;
 import com.ktpm.pojo.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -21,6 +22,7 @@ public class UserServices {
         
         try (Connection conn = JdbcUtils.getConn();
              PreparedStatement stm = conn.prepareStatement(sql)) {
+            
             stm.setString(1, user.getFullName());
             stm.setString(2, user.getPhone());
             stm.setString(3, user.getEmail());
@@ -35,4 +37,23 @@ public class UserServices {
     private String hashPassword(String password) {
         return BCrypt.hashpw(password, BCrypt.gensalt(12));
     }
+    
+    public boolean authenticate(String email, String password) throws SQLException {
+        String sql = "SELECT * FROM user WHERE email = ?";
+        
+        try (Connection conn = JdbcUtils.getConn();
+             PreparedStatement stm = conn.prepareStatement(sql)) {
+            
+            stm.setString(1, email);
+            ResultSet user = stm.executeQuery();
+            
+            if (user.next()) {
+                String hashedPassword = user.getString("password");
+                return BCrypt.checkpw(password, hashedPassword);
+            }
+        }
+        
+        return false;
+    }
 }
+;
