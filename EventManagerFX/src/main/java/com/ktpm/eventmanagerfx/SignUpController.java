@@ -6,6 +6,7 @@ package com.ktpm.eventmanagerfx;
 
 import com.ktpm.pojo.User;
 import com.ktpm.services.UserServices;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
@@ -39,14 +40,14 @@ public class SignUpController implements Initializable {
         // disable button Đăng ký khi chưa điền đầy đủ thông tin
         btnSignUp.disableProperty().bind(
                 txtFullName.textProperty().isEmpty()
-            .or(txtPhone.textProperty().isEmpty())
-            .or(txtEmail.textProperty().isEmpty())
-            .or(txtPassword.textProperty().isEmpty())
-            .or(txtConfirmPassword.textProperty().isEmpty())
+                        .or(txtPhone.textProperty().isEmpty())
+                        .or(txtEmail.textProperty().isEmpty())
+                        .or(txtPassword.textProperty().isEmpty())
+                        .or(txtConfirmPassword.textProperty().isEmpty())
         );
     }
 
-    public void addUserHandler(ActionEvent e) throws SQLException {
+    public void signUpHandler(ActionEvent e) throws SQLException {
         String fullName = txtFullName.getText().trim();
         String phone = txtPhone.getText().trim();
         String email = txtEmail.getText().trim();
@@ -68,11 +69,6 @@ public class SignUpController implements Initializable {
     }
 
     public boolean validateInput(String fullName, String phone, String email, String password, String confirmPassword) {
-        if (fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || phone.isEmpty()) {
-            Utils.getAlert("Vui lòng điền đầy đủ thông tin!");
-            return false;
-        }
-
         if (!password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
             Utils.getAlert("Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 số, 1 ký tự đặc biệt!");
             return false;
@@ -86,4 +82,7 @@ public class SignUpController implements Initializable {
         return true;
     }
 
+    public void goToLogin() throws IOException {
+        App.setRoot("Login");
+    }
 }

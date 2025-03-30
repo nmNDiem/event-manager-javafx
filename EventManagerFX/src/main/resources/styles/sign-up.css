@@ -6,10 +6,17 @@
 }
 
 .input {
-    -fx-background-color: #3c364c;
-    -fx-prompt-text-fill: #6f697d;
+    -fx-background-color: #403a51;
+    -fx-prompt-text-fill: #898398;
     -fx-text-fill: #f9f8fe;
-    -fx-font-size: 15;
+    -fx-font-size: 14;
+    -fx-border-radius: 5;
+    -fx-pref-width: 200px;
+    -fx-pref-height: 35px;
+}
+
+.input:focused {
+    -fx-border-color: #a49cc3;
 }
 
 .button-sign-up {
@@ -17,17 +24,23 @@
     -fx-font-size: 15;
     -fx-text-fill: #fdfafd;
     -fx-cursor: hand;
+    -fx-pref-height: 35;
 }
 
 .normal-lable {
     -fx-text-fill: #f9f8fe;
 }
 
-.button-text-login {
+.button-text {
     -fx-background-color: transparent;
     -fx-text-fill: #c3bae3;
     -fx-font-weight: bold;
     -fx-underline: true;
     -fx-cursor: hand;
     -fx-padding: 0;
+}
+
+.check-box {
+    -fx-text-fill: #e6e1f2;
+    -fx-cursor: hand;
 }

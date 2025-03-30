@@ -10,14 +10,14 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox alignment="CENTER" prefHeight="500.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.eventmanagerfx.SignUpController">
+<VBox alignment="TOP_CENTER" prefHeight="500.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.eventmanagerfx.SignUpController">
    <children>
       <Label styleClass="title" text="Đăng ký tài khoản" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
          <VBox.margin>
-            <Insets bottom="25.0" />
+            <Insets bottom="25.0" top="30.0" />
          </VBox.margin>
       </Label>
       <TextField fx:id="txtFullName" promptText="Họ và tên" styleClass="input">
@@ -51,7 +51,7 @@
             <Insets left="15.0" right="15.0" top="15.0" />
          </VBox.margin>
       </PasswordField>
-      <Button fx:id="btnSignUp" mnemonicParsing="false" onAction="#addUserHandler" prefHeight="30.0" prefWidth="224.0" styleClass="button-sign-up" text="Đăng ký">
+      <Button fx:id="btnSignUp" mnemonicParsing="false" onAction="#signUpHandler" prefHeight="30.0" prefWidth="224.0" styleClass="button-sign-up" text="Đăng ký">
          <font>
             <Font name="System Bold" size="12.0" />
          </font>
@@ -62,7 +62,7 @@
       <HBox alignment="CENTER">
          <children>
             <Label styleClass="normal-lable" text="Bạn đã có tài khoản?" />
-            <Button mnemonicParsing="false" styleClass="button-text-login" text="Đăng nhập">
+            <Button mnemonicParsing="false" onAction="#goToLogin" styleClass="button-text" text="Đăng nhập">
                <HBox.margin>
                   <Insets left="10.0" />
                </HBox.margin>
