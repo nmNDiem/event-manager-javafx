@@ -1,0 +1,23 @@
+.btn-cate {
+    -fx-pref-width: Infinity;
+    -fx-pref-height: 50;
+    -fx-background-color: transparent;
+    -fx-text-fill: #d3cbf3;
+    -fx-font-size: 18;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-cursor: hand;
+}
+
+.btn-cate:hover {
+    /*-fx-border-color: #4c4665;*/
+    /*-fx-border-width: 1px;*/
+    -fx-background-color: #b0521c;
+    -fx-effect: dropshadow(gaussian, #41437e, 20, 0.1, 2, 2);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.flowpane-event-container {
+    -fx-background-color: linear-gradient(to top, #2c2638, #180a29);
+}

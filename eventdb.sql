@@ -58,12 +58,11 @@ CREATE TABLE `event` (
   `capacity` int NOT NULL,
   `available_tickets` int NOT NULL,
   `price` decimal(15,0) NOT NULL DEFAULT '0',
-  `created_by` int NOT NULL,
+  `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_event` (`location`,`start_time`),
-  KEY `created_by` (`created_by`),
   KEY `category_id` (`category_id`),
-  CONSTRAINT `event_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `user` (`id`) ON DELETE CASCADE,
   CONSTRAINT `event_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -74,7 +73,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ','Hội trường A','2025-04-10 09:00:00','2025-04-10 11:00:00',100,100,50000,1),(2,1,'Lễ hội Âm nhạc','Sân vận động B','2025-05-15 18:00:00','2025-05-15 22:30:00',500,500,20000,1);
+INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ','Hội trường A','2025-04-10 09:00:00','2025-04-10 11:00:00',100,100,50000,'https://static.vnuhcm.edu.vn/images/2025/01/22/28d49021cb2c7a72233d.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.'),(2,1,'Lễ hội Âm nhạc','Sân vận động B','2025-05-15 18:00:00','2025-05-15 22:30:00',500,500,20000,'https://media-cdn-v2.laodong.vn/storage/newsportal/2018/9/19/631797/Img20170916132724800.jpg','Lễ hội âm nhạc là sự kiện sôi động, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -183,7 +182,7 @@ CREATE TABLE `user` (
   `role` enum('ADMIN','USER') COLLATE utf8mb4_unicode_ci DEFAULT 'USER',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -192,7 +191,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','0123456789','admin@gmail.com','123','ADMIN'),(2,'user1','0987654321','user1@gmail.com','123','USER'),(3,'user2','0909090909','user2@gmail.com','123','USER');
+INSERT INTO `user` VALUES (1,'admin','0123456789','admin@gmail.com','123','ADMIN'),(2,'user1','0987654321','user1@gmail.com','123','USER'),(3,'user2','0909090909','user2@gmail.com','123','USER'),(10,'abc','123','abc@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','USER');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -205,4 +204,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-30 20:56:00
+-- Dump completed on 2025-04-03 22:27:56
