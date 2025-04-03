@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.eventmanagerfx.HomeController">
+   <stylesheets>
+      <URL value="@../../../styles/home.css" />
+      <URL value="@../../../styles/styles.css" />
+   </stylesheets>
+   <children>
+      <VBox fx:id="cateContainer" alignment="TOP_CENTER" prefHeight="720.0" prefWidth="191.0" style="-fx-background-color: #1e1834;">
+         <children>
+            <Button maxWidth="-Infinity" mnemonicParsing="false" styleClass="btn-cate" text="Trang chủ" />
+         </children>
+      </VBox>
+      <VBox prefHeight="720.0" prefWidth="1090.0" style="-fx-background-color: #2c2638;">
+         <children>
+            <HBox prefHeight="78.0" prefWidth="1051.0" style="-fx-background-color: gray;" />
+            <ScrollPane prefHeight="643.0" prefWidth="1127.0">
+               <content>
+                  <FlowPane fx:id="eventContainer" hgap="20.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="644.0" prefWidth="1074.0" styleClass="flowpane-event-container" vgap="20.0">
+                     <padding>
+                        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+                     </padding></FlowPane>
+               </content>
+            </ScrollPane>
+         </children>
+      </VBox>
+   </children>
+</HBox>
