@@ -31,7 +31,7 @@ public class LoginController implements Initializable {
         );
     }
 
-    public void loginHandler() throws SQLException {
+    public void loginHandler() throws SQLException, IOException {
         String email = txtEmailLogin.getText().trim();
         String password = txtPasswordLogin.getText().trim();
         
@@ -39,6 +39,7 @@ public class LoginController implements Initializable {
         
         if (success) {
             Utils.getAlert("Đăng nhập thành công!");
+            App.setRoot("Home");
         } else {
             Utils.getAlert("Email hoặc mật khẩu không đúng!");
         }
