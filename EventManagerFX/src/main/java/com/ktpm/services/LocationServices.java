@@ -4,8 +4,8 @@
  */
 package com.ktpm.services;
 
-import com.ktpm.pojo.Category;
 import com.ktpm.pojo.JdbcUtils;
+import com.ktpm.pojo.Location;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -17,43 +17,46 @@ import javafx.collections.ObservableList;
  *
  * @author admin
  */
-public class CategoryServices {
+public class LocationServices {
 
-    public ObservableList<Category> getCates() throws SQLException {
-        ObservableList<Category> cates = FXCollections.observableArrayList();
-        String sql = "SELECT * FROM category";
-        
-        try (Connection conn = JdbcUtils.getConn();
-             PreparedStatement stm = conn.prepareStatement(sql)) {
-            
-            ResultSet rs = stm.executeQuery();
-            while(rs.next()) {
-                int id = rs.getInt("id");
-                String name = rs.getString("name");
-                
-                cates.add(new Category(id, name));
-            }
-        }
-        
-        return cates;
-    }
-
-    public Category getCateById(int cateId) throws SQLException {
-        Category cate = null;
-        String sql = "SELECT * FROM category WHERE id = ?";
+    public ObservableList<Location> getLocations() throws SQLException {
+        ObservableList<Location> locations = FXCollections.observableArrayList();
+        String sql = "SELECT * FROM location";
 
         try (Connection conn = JdbcUtils.getConn(); 
              PreparedStatement stm = conn.prepareStatement(sql)) {
             
-            stm.setInt(1, cateId);
             ResultSet rs = stm.executeQuery();
             while(rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
+                String address = rs.getString("address");
+                int capacity = rs.getInt("capacity");
                 
-                cate = new Category(id, name);
+                locations.add(new Location(id, name, address, capacity));
             }
         }
-        return cate;
+        return locations;
+    }
+    
+    public Location getLocationById(int locationId) throws SQLException {
+        Location location = null;
+        String sql = "SELECT * FROM location WHERE id = ?";
+
+        try (Connection conn = JdbcUtils.getConn(); 
+             PreparedStatement stm = conn.prepareStatement(sql)) {
+            
+            stm.setInt(1, locationId);
+            ResultSet rs = stm.executeQuery();
+            while(rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String address = rs.getString("address");
+                int capacity = rs.getInt("capacity");
+                
+                location = new Location(id, name, address, capacity);
+            }
+        }
+        return location;
     }
 }

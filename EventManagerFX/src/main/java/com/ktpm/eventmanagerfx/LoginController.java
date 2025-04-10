@@ -41,7 +41,7 @@ public class LoginController implements Initializable {
             Utils.getAlert("Đăng nhập thành công!");
             App.setRoot("Home");
         } else {
-            Utils.getAlert("Email hoặc mật khẩu không đúng!");
+            Utils.showAlert("Email hoặc mật khẩu không đúng!");
         }
     }
     

@@ -15,32 +15,45 @@ public class Event {
     private int id;
     private int categoryId;
     private String name;
-    private String location;
+    private int locationId;
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private int capacity;
     private int availableTickets;
     private BigDecimal price;
-    private String image_url;
+    private String imageUrl;
     private String description;
 
     public Event() {
     }
 
-    public Event(int categoryId, String name, String location, LocalDateTime startTime, LocalDateTime endTime, int capacity, int availableTickets, BigDecimal price, String image_url, String description) {
+    public Event(int id, int categoryId, String name, int locationId, 
+            LocalDateTime startTime, LocalDateTime endTime, int availableTickets, 
+            BigDecimal price, String imageUrl, String description) {
+        this.id = id;
         this.categoryId = categoryId;
         this.name = name;
-        this.location = location;
+        this.locationId = locationId;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.capacity = capacity;
         this.availableTickets = availableTickets;
         this.price = price;
-        this.image_url = image_url;
+        this.imageUrl = imageUrl;
         this.description = description;
     }
     
-    
+    public Event(int categoryId, String name, int locationId, 
+            LocalDateTime startTime, LocalDateTime endTime, int availableTickets, 
+            BigDecimal price, String imageUrl, String description) {
+        this.categoryId = categoryId;
+        this.name = name;
+        this.locationId = locationId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.availableTickets = availableTickets;
+        this.price = price;
+        this.imageUrl = imageUrl;
+        this.description = description;
+    }
 
     /**
      * @return the id
@@ -85,17 +98,17 @@ public class Event {
     }
 
     /**
-     * @return the location
+     * @return the locationId
      */
-    public String getLocation() {
-        return location;
+    public int getLocationId() {
+        return locationId;
     }
 
     /**
-     * @param location the location to set
+     * @param locationId the locationId to set
      */
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLocationId(int locationId) {
+        this.locationId = locationId;
     }
 
     /**
@@ -127,20 +140,6 @@ public class Event {
     }
 
     /**
-     * @return the capacity
-     */
-    public int getCapacity() {
-        return capacity;
-    }
-
-    /**
-     * @param capacity the capacity to set
-     */
-    public void setCapacity(int capacity) {
-        this.capacity = capacity;
-    }
-
-    /**
      * @return the availableTickets
      */
     public int getAvailableTickets() {
@@ -169,17 +168,17 @@ public class Event {
     }
 
     /**
-     * @return the image_url
+     * @return the imageUrl
      */
-    public String getImage_url() {
-        return image_url;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
     /**
-     * @param image_url the image_url to set
+     * @param imageUrl the imageUrl to set
      */
-    public void setImage_url(String image_url) {
-        this.image_url = image_url;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     /**
@@ -196,5 +195,6 @@ public class Event {
         this.description = description;
     }
 
+    
     
 }

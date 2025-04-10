@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1010.0" styleClass="root" stylesheets="@../../../styles/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.eventmanagerfx.AdminEventController">
+   <children>
+      <Pane layoutX="-3.0" layoutY="63.0" prefHeight="4.0" prefWidth="1019.0" style="-fx-background-color: #261266;" />
+      <Label layoutX="32.0" layoutY="80.0" text="ID:" textFill="#f4ecec" AnchorPane.leftAnchor="32.0" AnchorPane.topAnchor="80.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="31.333333333333332" layoutY="144.0" text="Tên sự kiện:" textFill="#f4ecec" AnchorPane.leftAnchor="31.333333333333332">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="31.333333333333332" layoutY="210.0" text="Thể loại:" textFill="#f4ecec" AnchorPane.leftAnchor="31.333333333333332">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="32.0" layoutY="273.0" text="Địa điểm:" textFill="#f4ecec" AnchorPane.leftAnchor="32.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="371.0" layoutY="80.0" text="Thời gian bắt đầu:" textFill="#f4ecec">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="371.0" layoutY="144.0" text="Thời gian kết thúc:" textFill="#f4ecec">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="371.0" layoutY="210.0" text="Số lượng vé còn:" textFill="#f4ecec">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="371.0" layoutY="273.0" text="Giá vé:" textFill="#f4ecec">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="711.0" layoutY="80.0" text="Ảnh sự kiện:" textFill="#f4ecec">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <Label layoutX="711.0" layoutY="210.0" text="Mô tả về sự kiện:" textFill="#f4ecec">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Label>
+      <TextField fx:id="txtId" editable="false" layoutX="31.333333333333332" layoutY="106.0" prefHeight="16.0" prefWidth="250.0" AnchorPane.leftAnchor="31.333333333333332">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtName" layoutX="31.333333333333332" layoutY="171.0" prefHeight="16.0" prefWidth="250.0" AnchorPane.leftAnchor="31.333333333333332">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <ComboBox fx:id="cbbCate" layoutX="31.333333333333332" layoutY="236.0" prefHeight="32.0" prefWidth="250.0" AnchorPane.leftAnchor="31.333333333333332" />
+      <ComboBox fx:id="cbbLocation" layoutX="31.333333333333332" layoutY="300.0" prefHeight="32.0" prefWidth="250.0" AnchorPane.leftAnchor="31.333333333333332" />
+      <DatePicker fx:id="startDatePk" layoutX="371.0" layoutY="106.0" prefHeight="32.0" prefWidth="128.0" />
+      <DatePicker fx:id="endDatePk" layoutX="371.0" layoutY="171.0" prefHeight="32.0" prefWidth="128.0" />
+      <TextField fx:id="txtTickeks" layoutX="371.0" layoutY="236.0" prefHeight="16.0" prefWidth="250.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <TextField fx:id="txtPrice" layoutX="371.0" layoutY="300.0" prefHeight="16.0" prefWidth="250.0">
+         <font>
+            <Font size="15.0" />
+         </font>
+      </TextField>
+      <ImageView fx:id="eventImgView" fitHeight="95.0" fitWidth="265.0" layoutX="712.0" layoutY="106.0" onMouseClicked="#uploadImage" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/upload-img.jpg" />
+         </image></ImageView>
+      <TextArea fx:id="txtDesc" layoutX="711.0" layoutY="236.0" prefHeight="95.0" prefWidth="265.0" wrapText="true">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </TextArea>
+      <TableView fx:id="eventTable" layoutY="352.0" prefHeight="290.0" prefWidth="1010.0" tableMenuButtonVisible="true" />
+      <Button fx:id="btnAddEvent" layoutX="649.0" layoutY="15.0" mnemonicParsing="false" onAction="#addEventHandler" text="Thêm sự kiện">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/add.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="btnUpdateEvent" layoutX="782.0" layoutY="15.0" mnemonicParsing="false" text="Cập nhật">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/check.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="btnClear" layoutX="893.0" layoutY="15.0" mnemonicParsing="false" text="Làm mới">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/clear.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="19.0" layoutY="12.0" prefHeight="32.0" prefWidth="249.0" text="Quản lý sự kiện" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="30.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color red="0.7259584069252014" green="0.1888672262430191" blue="0.9561403393745422" />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
+      </Label>
+      <Spinner fx:id="startTimeSpn" editable="true" layoutX="510.0" layoutY="106.0" prefHeight="32.0" prefWidth="112.0" />
+      <Spinner fx:id="endTimeSpn" editable="true" layoutX="510.0" layoutY="171.0" prefHeight="32.0" prefWidth="112.0" />
+   </children>
+</AnchorPane>

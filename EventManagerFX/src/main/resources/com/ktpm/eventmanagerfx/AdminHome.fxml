@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.eventmanagerfx.AdminHomeController">
+   <stylesheets>
+      <URL value="@../../../styles/home.css" />
+      <URL value="@../../../styles/styles.css" />
+   </stylesheets>
+   <children>
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="190.0" style="-fx-background-color: #1e1834;">
+         <children>
+            <Button fx:id="btnEvent" maxWidth="-Infinity" mnemonicParsing="false" onAction="#loadEventView" styleClass="btn-cate" text="Sự kiện" />
+            <Button fx:id="btnLocaion" maxWidth="-Infinity" mnemonicParsing="false" styleClass="btn-cate" text="Địa điểm" />
+         </children>
+      </VBox>
+      <AnchorPane fx:id="mainContent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1010.0" />
+   </children>
+</HBox>

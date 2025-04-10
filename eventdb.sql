@@ -52,18 +52,18 @@ CREATE TABLE `event` (
   `id` int NOT NULL AUTO_INCREMENT,
   `category_id` int DEFAULT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `location` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `location_id` int NOT NULL,
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
-  `capacity` int NOT NULL,
   `available_tickets` int NOT NULL,
   `price` decimal(15,0) NOT NULL DEFAULT '0',
   `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `unique_event` (`location`,`start_time`),
+  UNIQUE KEY `unique_event` (`location_id`,`start_time`),
   KEY `category_id` (`category_id`),
-  CONSTRAINT `event_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL
+  CONSTRAINT `event_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL,
+  CONSTRAINT `event_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -73,8 +73,34 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ','Hội trường A','2025-04-10 09:00:00','2025-04-10 11:00:00',100,100,50000,'https://static.vnuhcm.edu.vn/images/2025/01/22/28d49021cb2c7a72233d.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.'),(2,1,'Lễ hội Âm nhạc','Sân vận động B','2025-05-15 18:00:00','2025-05-15 22:30:00',500,500,20000,'https://media-cdn-v2.laodong.vn/storage/newsportal/2018/9/19/631797/Img20170916132724800.jpg','Lễ hội âm nhạc là sự kiện sôi động, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.');
+INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ',1,'2025-04-10 09:00:00','2025-04-10 11:00:00',100,50000,'https://static.vnuhcm.edu.vn/images/2025/01/22/28d49021cb2c7a72233d.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.'),(2,1,'Lễ hội Âm nhạc',2,'2025-05-15 18:00:00','2025-05-15 22:30:00',500,20000,'https://media-cdn-v2.laodong.vn/storage/newsportal/2018/9/19/631797/Img20170916132724800.jpg','Lễ hội âm nhạc là sự kiện sôi động, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `location`
+--
+
+DROP TABLE IF EXISTS `location`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `location` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `capacity` int NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `location`
+--
+
+LOCK TABLES `location` WRITE;
+/*!40000 ALTER TABLE `location` DISABLE KEYS */;
+INSERT INTO `location` VALUES (1,'Hội trường A','97 Võ Văn Tần, P6, Q3, TPHCM',100),(2,'Sân vận động B','2A Phan Đình Giót, P2, Q.Tân Bình, TPHCM',3000),(3,'Nhà thi đấu C','35 Hồ Hảo Hớn, P.Cô Giang, Q1,  TPHCM',400);
+/*!40000 ALTER TABLE `location` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -191,7 +217,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','0123456789','admin@gmail.com','123','ADMIN'),(2,'user1','0987654321','user1@gmail.com','123','USER'),(3,'user2','0909090909','user2@gmail.com','123','USER'),(10,'abc','123','abc@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','USER');
+INSERT INTO `user` VALUES (1,'admin','0123456789','admin@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','ADMIN'),(2,'user1','0987654321','user1@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','USER'),(3,'user2','0909090909','user2@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','USER'),(10,'abc','123','abc@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','USER');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -204,4 +230,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-03 22:27:56
+-- Dump completed on 2025-04-11  3:02:27
