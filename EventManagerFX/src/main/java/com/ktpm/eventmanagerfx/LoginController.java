@@ -31,14 +31,15 @@ public class LoginController implements Initializable {
         );
     }
 
-    public void loginHandler() throws SQLException {
+    public void loginHandler() throws SQLException, IOException {
         String email = txtEmailLogin.getText().trim();
         String password = txtPasswordLogin.getText().trim();
         
         boolean success = userServices.authenticate(email, password);
         
         if (success) {
-            Utils.showAlert("Đăng nhập thành công!");
+            Utils.getAlert("Đăng nhập thành công!");
+            App.setRoot("Home");
         } else {
             Utils.showAlert("Email hoặc mật khẩu không đúng!");
         }

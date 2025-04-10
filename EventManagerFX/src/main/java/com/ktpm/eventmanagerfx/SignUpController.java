@@ -47,7 +47,7 @@ public class SignUpController implements Initializable {
         );
     }
 
-    public void signUpHandler(ActionEvent e) throws SQLException {
+    public void signUpHandler(ActionEvent e) throws SQLException, IOException {
         String fullName = txtFullName.getText().trim();
         String phone = txtPhone.getText().trim();
         String email = txtEmail.getText().trim();
@@ -62,7 +62,8 @@ public class SignUpController implements Initializable {
         boolean success = userService.addUser(user);
 
         if (success) {
-            Utils.showAlert("Đăng ký thành công!");
+            Utils.getAlert("Đăng ký thành công!");
+            App.setRoot("Login");
         } else {
             Utils.showAlert("Đăng ký thất bại!");
         }
