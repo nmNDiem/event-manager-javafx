@@ -38,9 +38,9 @@ public class LoginController implements Initializable {
         boolean success = userServices.authenticate(email, password);
         
         if (success) {
-            Utils.getAlert("Đăng nhập thành công!");
+            Utils.showAlert("Đăng nhập thành công!");
         } else {
-            Utils.getAlert("Email hoặc mật khẩu không đúng!");
+            Utils.showAlert("Email hoặc mật khẩu không đúng!");
         }
     }
     

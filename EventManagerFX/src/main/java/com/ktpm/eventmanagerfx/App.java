@@ -16,11 +16,12 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         stage = primaryStage;
-        scene = new Scene(loadFXML("Home"));
+        scene = new Scene(loadFXML("AdminHome"));
         
         stage.setScene(scene);
         stage.setTitle("Quản lý tổ chức sự kiện");
-        stage.setMaximized(true);
+//        stage.setMaximized(true);
+        stage.centerOnScreen();
         stage.show();
     }
 

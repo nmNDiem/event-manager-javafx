@@ -62,20 +62,20 @@ public class SignUpController implements Initializable {
         boolean success = userService.addUser(user);
 
         if (success) {
-            Utils.getAlert("Đăng ký thành công!");
+            Utils.showAlert("Đăng ký thành công!");
         } else {
-            Utils.getAlert("Đăng ký thất bại!");
+            Utils.showAlert("Đăng ký thất bại!");
         }
     }
 
     public boolean validateInput(String fullName, String phone, String email, String password, String confirmPassword) {
         if (!password.matches("^(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")) {
-            Utils.getAlert("Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 số, 1 ký tự đặc biệt!");
+            Utils.showAlert("Mật khẩu phải có ít nhất 8 ký tự, 1 chữ hoa, 1 số, 1 ký tự đặc biệt!");
             return false;
         }
 
         if (!password.equals(confirmPassword)) {
-            Utils.getAlert("Mật khẩu xác nhận không khớp!");
+            Utils.showAlert("Mật khẩu xác nhận không khớp!");
             return false;
         }
 

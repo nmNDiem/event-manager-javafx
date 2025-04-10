@@ -8,16 +8,20 @@ package com.ktpm.pojo;
  *
  * @author admin
  */
-public class Category {
+public class Location {
     private int id;
     private String name;
+    private String address;
+    private int capacity;
 
-    public Category() {
+    public Location() {
     }
 
-    public Category(int id, String name) {
+    public Location(int id, String name, String address, int capacity) {
         this.id = id;
         this.name = name;
+        this.address = address;
+        this.capacity = capacity;
     }
 
     @Override
@@ -51,5 +55,33 @@ public class Category {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    /**
+     * @return the capacity
+     */
+    public int getCapacity() {
+        return capacity;
+    }
+
+    /**
+     * @param capacity the capacity to set
+     */
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 }

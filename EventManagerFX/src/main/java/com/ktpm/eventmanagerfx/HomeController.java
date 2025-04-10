@@ -69,7 +69,7 @@ public class HomeController implements Initializable {
                 VBox eventCard = loader.load();
                 EventCardController controller = loader.getController();
 
-                controller.setEventData(e.getImage_url(), e.getName(), e.getStartTime().toString());
+                controller.setEventData(e.getImageUrl(), e.getName(), e.getStartTime().toString());
 
                 // bo goc event card
                 Rectangle clip = new Rectangle(0, 0, 250, 240);
