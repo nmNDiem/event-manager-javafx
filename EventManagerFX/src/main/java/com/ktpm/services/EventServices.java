@@ -73,36 +73,62 @@ public class EventServices {
             return false;
         }
     }
-    
-    public boolean isEventTimeConflict(int locationId, LocalDateTime startTime, LocalDateTime endTime) {
-    String sql = "SELECT COUNT(*) FROM event WHERE location_id = ? AND (" +
-                 "(start_time < ? AND end_time > ?) OR " +
-                 "(start_time > ? AND end_time < ?) OR " +
-                 "(start_time >= ? AND end_time <= ?) OR " +
-                 "(start_time <= ? AND end_time >= ?))";
-    
-    try (Connection conn = JdbcUtils.getConn();
-         PreparedStatement stm = conn.prepareStatement(sql)) {
-        
-        stm.setInt(1, locationId);
-        stm.setTimestamp(2, Timestamp.valueOf(startTime));
-        stm.setTimestamp(3, Timestamp.valueOf(endTime));
-        stm.setTimestamp(4, Timestamp.valueOf(startTime));
-        stm.setTimestamp(5, Timestamp.valueOf(endTime));
-        stm.setTimestamp(6, Timestamp.valueOf(startTime));
-        stm.setTimestamp(7, Timestamp.valueOf(endTime));
-        stm.setTimestamp(8, Timestamp.valueOf(startTime));
-        stm.setTimestamp(9, Timestamp.valueOf(endTime));
-        
-        ResultSet rs = stm.executeQuery();
-        if (rs.next()) {
-            return rs.getInt(1) > 0;  // Nếu có xung đột, trả về true
-        }
-    } catch (SQLException e) {
-        e.printStackTrace();
-    }
-    return false;
-}
 
+    public boolean updateEvent(Event e) {
+        String sql = "UPDATE event SET category_id=?, name=?, location_id=?, start_time=?, end_time=?, "
+                + "available_tickets=?, price=?, image_url=?, description=? WHERE id=?";
+
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
+
+            stm.setInt(1, e.getCategoryId());
+            stm.setString(2, e.getName());
+            stm.setInt(3, e.getLocationId());
+            stm.setTimestamp(4, Timestamp.valueOf(e.getStartTime()));
+            stm.setTimestamp(5, Timestamp.valueOf(e.getEndTime()));
+            stm.setInt(6, e.getAvailableTickets());
+            stm.setBigDecimal(7, e.getPrice());
+            stm.setString(8, e.getImageUrl());
+            stm.setString(9, e.getDescription());
+            stm.setInt(10, e.getId());
+
+            return stm.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean isEventTimeConflict(int eventId, int locationId, LocalDateTime startTime, LocalDateTime endTime) {
+        String sql = "SELECT COUNT(*) FROM event WHERE location_id = ? "
+                + "AND id != ? "
+                + "AND (start_time < ? AND end_time > ? "
+                + "OR start_time > ? AND end_time < ? "
+                + "OR start_time >= ? AND end_time <= ? "
+                + "OR start_time <= ? AND end_time >= ?)";
+
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
+
+            stm.setInt(1, locationId);
+            stm.setInt(2, eventId); // set id = 0 để cho addEvent để không bị trùng sự kiện
+
+            stm.setTimestamp(3, Timestamp.valueOf(endTime));
+            stm.setTimestamp(4, Timestamp.valueOf(startTime));
+            stm.setTimestamp(5, Timestamp.valueOf(startTime));
+            stm.setTimestamp(6, Timestamp.valueOf(endTime));
+            stm.setTimestamp(7, Timestamp.valueOf(startTime));
+            stm.setTimestamp(8, Timestamp.valueOf(endTime));
+            stm.setTimestamp(9, Timestamp.valueOf(startTime));
+            stm.setTimestamp(10, Timestamp.valueOf(endTime));
+
+            ResultSet rs = stm.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;    // nếu trùng thì return true
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
 }

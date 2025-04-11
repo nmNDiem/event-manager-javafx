@@ -94,10 +94,7 @@
             <Font size="15.0" />
          </font>
       </TextField>
-      <ImageView fx:id="eventImgView" fitHeight="95.0" fitWidth="265.0" layoutX="712.0" layoutY="106.0" onMouseClicked="#uploadImage" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../images/upload-img.jpg" />
-         </image></ImageView>
+      <ImageView fx:id="eventImgView" fitHeight="95.0" fitWidth="265.0" layoutX="712.0" layoutY="106.0" onMouseClicked="#uploadImage" pickOnBounds="true" preserveRatio="true" visible="false" />
       <TextArea fx:id="txtDesc" layoutX="711.0" layoutY="236.0" prefHeight="95.0" prefWidth="265.0" wrapText="true">
          <font>
             <Font size="16.0" />
@@ -113,7 +110,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Button fx:id="btnUpdateEvent" layoutX="782.0" layoutY="15.0" mnemonicParsing="false" text="Cập nhật">
+      <Button fx:id="btnUpdateEvent" layoutX="782.0" layoutY="15.0" mnemonicParsing="false" onAction="#updateEventHandler" text="Cập nhật">
          <graphic>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -154,5 +151,14 @@
       </Label>
       <Spinner fx:id="startTimeSpn" editable="true" layoutX="510.0" layoutY="106.0" prefHeight="32.0" prefWidth="112.0" />
       <Spinner fx:id="endTimeSpn" editable="true" layoutX="510.0" layoutY="171.0" prefHeight="32.0" prefWidth="112.0" />
+      <Button fx:id="btnUploadImg" layoutX="712.0" layoutY="138.0" mnemonicParsing="false" onAction="#uploadImage" text="Chọn ảnh">
+         <graphic>
+            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../images/upload.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
    </children>
 </AnchorPane>

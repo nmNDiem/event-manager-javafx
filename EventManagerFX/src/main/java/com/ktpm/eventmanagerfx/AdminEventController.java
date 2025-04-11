@@ -80,11 +80,14 @@ public class AdminEventController implements Initializable {
     Button btnUpdateEvent;
     @FXML
     Button btnClear;
+    @FXML
+    Button btnUploadImg;
 
     EventServices eventServices = new EventServices();
     CategoryServices categoryServices = new CategoryServices();
     LocationServices locationServices = new LocationServices();
 
+    private static Event selectedEvent;
     private static File selectedFile;
 
     @Override
@@ -94,10 +97,11 @@ public class AdminEventController implements Initializable {
         loadComboBoxes();
         setupTimeSpinner(startTimeSpn);
         setupTimeSpinner(endTimeSpn);
+        setVisibleImg(false, true);
 
         eventTable.setOnMouseClicked(event -> {
             if (event.getClickCount() == 1) {
-                Event selectedEvent = eventTable.getSelectionModel().getSelectedItem();
+                selectedEvent = eventTable.getSelectionModel().getSelectedItem();
                 if (selectedEvent != null) {
                     try {
                         loadEventToForm(selectedEvent);
@@ -107,7 +111,6 @@ public class AdminEventController implements Initializable {
                 }
             }
         });
-
     }
 
     private void createColumns() {
@@ -209,32 +212,23 @@ public class AdminEventController implements Initializable {
         String imgUrl = e.getImageUrl();
         if (imgUrl != null && !imgUrl.isEmpty()) {
             try {
-                eventImgView.setImage(new Image(imgUrl, true));
+                eventImgView.setImage(new Image(getClass().getResource(imgUrl).toExternalForm()));
+                setVisibleImg(true, false);
             } catch (Exception ex) {
                 Utils.showAlert("Lỗi: Không thể hiển thị ảnh sự kiện!");
-                eventImgView.setImage(new Image("/images/upload-img.jpg"));
+                eventImgView.setImage(null);
+                setVisibleImg(false, true);
             }
         } else {
-            eventImgView.setImage(new Image("/images/upload-img.jpg"));
+            Utils.showAlert("Lỗi: Ảnh không tồn tại!");
+            eventImgView.setImage(null);
+            setVisibleImg(false, true);
         }
     }
 
     @FXML
     public void addEventHandler() {
-        if (selectedFile != null) {
-            // sao chép ảnh vừa chọn từ máy vào resources
-            String targetPath = "src/main/resources/images/" + selectedFile.getName();
-            try {
-                Files.copy(selectedFile.toPath(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException ex) {
-                Utils.showAlert("Lỗi: Lưu ảnh thất bại!");
-                Logger.getLogger(AdminEventController.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            Image image = new Image(selectedFile.toURI().toString());
-            eventImgView.setImage(image);
-        }
-
-        // Lấy dữ liệu từ các ô input
+        // lấy dữ liệu từ các ô input
         String name = txtName.getText();
         Category category = cbbCate.getValue();
         Location location = cbbLocation.getValue();
@@ -247,10 +241,6 @@ public class AdminEventController implements Initializable {
         String imageUrl = eventImgView.getImage().getUrl();
         String description = txtDesc.getText();
 
-        int availableTickets = Integer.parseInt(tickets);
-        LocalDateTime startDatetime = LocalDateTime.of(startDate, startTime);
-        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
-
         if (name.isEmpty() || description.isEmpty() || category == null || location == null
                 || startDate == null || endDate == null || startTime == null || endTime == null
                 || tickets.isEmpty() || price.isEmpty()) {
@@ -258,6 +248,8 @@ public class AdminEventController implements Initializable {
             return;
         }
 
+        LocalDateTime startDatetime = LocalDateTime.of(startDate, startTime);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
         // Kiểm tra ngày tổ chức < ngày hiện tại
         if (startDatePk.getValue().isBefore(LocalDate.now())) {
             Utils.showAlert("Ngày tổ chức phải lớn hơn ngày hiện tại!");
@@ -265,15 +257,21 @@ public class AdminEventController implements Initializable {
         }
 
         // Kiểm tra trùng địa điểm và giờ
-        if (eventServices.isEventTimeConflict(location.getId(), startDatetime, endDateTime)) {
+        if (eventServices.isEventTimeConflict(0, location.getId(), startDatetime, endDateTime)) {
             Utils.showAlert("Lỗi: Trùng địa điểm và giờ với sự kiện khác!");
             return;
         }
 
+        int availableTickets = Integer.parseInt(tickets);
         // Kiểm tra số lượng khách không vượt quá sức chứa địa điểm
         if (availableTickets > location.getCapacity()) {
             Utils.showAlert("Số lượng khách không được vượt quá sức chứa địa điểm!");
             return;
+        }
+
+        // nếu chọn ảnh mới thì lưu vào db với url này
+        if (selectedFile != null) {
+            imageUrl = "/images/" + selectedFile.getName();
         }
 
         Event event = new Event();
@@ -288,11 +286,93 @@ public class AdminEventController implements Initializable {
         event.setDescription(description);
 
         if (eventServices.addEvent(event)) {
+            if (selectedFile != null) {
+                copyImgIntoResources();
+            }
             Utils.showAlert("Thêm sự kiện thành công!");
             clearForm();
             loadTableData();
         } else {
             Utils.showAlert("Lỗi: Thêm sự kiện thất bại!");
+        }
+    }
+
+    @FXML
+    public void updateEventHandler() {
+        if (selectedEvent == null) {
+            Utils.showAlert("Vui lòng chọn sự kiện để cập nhật!");
+            return;
+        }
+
+        // Lấy dữ liệu từ các ô input
+        String id = txtId.getText();
+        String name = txtName.getText();
+        Category category = cbbCate.getValue();
+        Location location = cbbLocation.getValue();
+        LocalDate startDate = startDatePk.getValue();
+        LocalDate endDate = endDatePk.getValue();
+        LocalTime startTime = startTimeSpn.getValue();
+        LocalTime endTime = endTimeSpn.getValue();
+        String tickets = txtTickeks.getText();
+        String price = txtPrice.getText();
+        String imageUrl = eventImgView.getImage().getUrl();
+        String description = txtDesc.getText();
+
+        if (name.isEmpty() || description.isEmpty() || category == null || location == null
+                || startDate == null || endDate == null || startTime == null || endTime == null
+                || tickets.isEmpty() || price.isEmpty()) {
+            Utils.showAlert("Vui lòng điền đầy đủ thông tin!");
+            return;
+        }
+
+        LocalDateTime startDatetime = LocalDateTime.of(startDate, startTime);
+        LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
+        // Kiểm tra ngày tổ chức < ngày hiện tại
+        if (startDatePk.getValue().isBefore(LocalDate.now())) {
+            Utils.showAlert("Ngày tổ chức phải lớn hơn ngày hiện tại!");
+            return;
+        }
+
+        int eventId = Integer.parseInt(id);
+        // Kiểm tra trùng địa điểm và giờ
+        if (eventServices.isEventTimeConflict(eventId, location.getId(), startDatetime, endDateTime)) {
+            Utils.showAlert("Lỗi: Trùng địa điểm và giờ với sự kiện khác!");
+            return;
+        }
+
+        int availableTickets = Integer.parseInt(tickets);
+        // Kiểm tra số lượng khách không vượt quá sức chứa địa điểm
+        if (availableTickets > location.getCapacity()) {
+            Utils.showAlert("Số lượng khách không được vượt quá sức chứa địa điểm!");
+            return;
+        }
+
+        // nếu chọn ảnh mới thì lưu vào db với url này
+        if (selectedFile != null) {
+            imageUrl = "/images/" + selectedFile.getName();
+        }
+
+        Event event = new Event();
+        event.setId(eventId);
+        event.setName(name);
+        event.setCategoryId(category.getId());
+        event.setLocationId(location.getId());
+        event.setStartTime(startDatetime);
+        event.setEndTime(endDateTime);
+        event.setAvailableTickets(availableTickets);
+        event.setPrice(new BigDecimal(price));
+        event.setImageUrl(imageUrl);
+        event.setDescription(description);
+
+        if (eventServices.updateEvent(event)) {
+            if (selectedFile != null) {
+                copyImgIntoResources();
+            }
+            Utils.showAlert("Cập nhật sự kiện thành công!");
+            clearForm();
+            loadTableData();
+        } else {
+            Utils.showAlert("Lỗi: Cập nhật sự kiện thất bại!");
         }
     }
 
@@ -309,7 +389,9 @@ public class AdminEventController implements Initializable {
         txtTickeks.clear();
         txtPrice.clear();
         txtDesc.clear();
-        eventImgView.setImage(new Image("/images/upload-img.jpg"));
+        eventImgView.setImage(null);
+
+        setVisibleImg(false, true);
     }
 
     @FXML
@@ -324,7 +406,26 @@ public class AdminEventController implements Initializable {
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
             eventImgView.setImage(image);
+            setVisibleImg(true, false);
         }
+    }
+
+    @FXML
+    public void copyImgIntoResources() {
+        String targetPath = "src/main/resources/images/" + selectedFile.getName();
+
+        // copy ảnh vừa chọn từ máy vào resources
+        try {
+            Files.copy(selectedFile.toPath(), Paths.get(targetPath), StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException ex) {
+            Utils.showAlert("Lỗi: Lưu ảnh thất bại!");
+            Logger.getLogger(AdminEventController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void setVisibleImg(boolean imgView, boolean btnUpload) {
+        eventImgView.setVisible(imgView);
+        btnUploadImg.setVisible(btnUpload);
     }
 
 }
