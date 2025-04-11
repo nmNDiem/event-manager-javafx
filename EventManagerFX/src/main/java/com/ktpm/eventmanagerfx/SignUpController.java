@@ -62,7 +62,7 @@ public class SignUpController implements Initializable {
         boolean success = userService.addUser(user);
 
         if (success) {
-            Utils.getAlert("Đăng ký thành công!");
+            Utils.showAlert("Đăng ký thành công!");
             App.setRoot("Login");
         } else {
             Utils.showAlert("Đăng ký thất bại!");
