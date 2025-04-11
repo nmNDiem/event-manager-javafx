@@ -212,10 +212,10 @@ public class AdminEventController implements Initializable {
                 eventImgView.setImage(new Image(imgUrl, true));
             } catch (Exception ex) {
                 Utils.showAlert("Lỗi: Không thể hiển thị ảnh sự kiện!");
-                eventImgView.setImage(new Image("file:images/upload-img.jpg"));
+                eventImgView.setImage(new Image("/images/upload-img.jpg"));
             }
         } else {
-            eventImgView.setImage(new Image("file:images/upload-img.jpg"));
+            eventImgView.setImage(new Image("/images/upload-img.jpg"));
         }
     }
 
@@ -289,10 +289,27 @@ public class AdminEventController implements Initializable {
 
         if (eventServices.addEvent(event)) {
             Utils.showAlert("Thêm sự kiện thành công!");
+            clearForm();
             loadTableData();
         } else {
             Utils.showAlert("Lỗi: Thêm sự kiện thất bại!");
         }
+    }
+
+    @FXML
+    public void clearForm() {
+        txtId.clear();
+        txtName.clear();
+        cbbCate.setValue(null);
+        cbbLocation.setValue(null);
+        startDatePk.setValue(null);
+        endDatePk.setValue(null);
+        startTimeSpn.getValueFactory().setValue(LocalTime.of(0, 0));
+        endTimeSpn.getValueFactory().setValue(LocalTime.of(0, 0));
+        txtTickeks.clear();
+        txtPrice.clear();
+        txtDesc.clear();
+        eventImgView.setImage(new Image("/images/upload-img.jpg"));
     }
 
     @FXML
