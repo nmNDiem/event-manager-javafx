@@ -13,8 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -47,7 +45,6 @@ public class EventServices {
                 events.add(new Event(id, categoryId, name, locationId, startTime, endTime, availableTickets, price, imageUrl, description));
             }
         }
-
         return events;
     }
 
@@ -98,37 +95,43 @@ public class EventServices {
         return false;
     }
 
+    public boolean deleteEventById(int id) {
+        String sql = "DELETE FROM event WHERE id = ?";
+
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql);) {
+
+            stm.setInt(1, id);
+            return stm.executeUpdate() > 0;
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean isEventTimeConflict(int eventId, int locationId, LocalDateTime startTime, LocalDateTime endTime) {
         String sql = "SELECT COUNT(*) FROM event WHERE location_id = ? "
+                // loại trừ chính event hiện tại (khi sửa),
+                // nếu thêm mới thì set eventId = 0 (vì không có eventId nào là 0)
                 + "AND id != ? "
-                + "AND (start_time < ? AND end_time > ? "
-                + "OR start_time > ? AND end_time < ? "
-                + "OR start_time >= ? AND end_time <= ? "
-                + "OR start_time <= ? AND end_time >= ?)";
+                // start (cũ) < end   (mới)
+                // end   (cũ) > start (mới)
+                + "AND start_time < ? AND end_time > ?";
 
-        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
+        try (Connection conn = JdbcUtils.getConn(); 
+                PreparedStatement stm = conn.prepareStatement(sql)) {
 
             stm.setInt(1, locationId);
-            stm.setInt(2, eventId); // set id = 0 để cho addEvent để không bị trùng sự kiện
-
+            stm.setInt(2, eventId);
             stm.setTimestamp(3, Timestamp.valueOf(endTime));
             stm.setTimestamp(4, Timestamp.valueOf(startTime));
-            stm.setTimestamp(5, Timestamp.valueOf(startTime));
-            stm.setTimestamp(6, Timestamp.valueOf(endTime));
-            stm.setTimestamp(7, Timestamp.valueOf(startTime));
-            stm.setTimestamp(8, Timestamp.valueOf(endTime));
-            stm.setTimestamp(9, Timestamp.valueOf(startTime));
-            stm.setTimestamp(10, Timestamp.valueOf(endTime));
 
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) > 0;    // nếu trùng thì return true
+                return rs.getInt(1) > 0;   // nếu đếm được > 0 event trùng thì return true
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return false;
     }
-
 }
