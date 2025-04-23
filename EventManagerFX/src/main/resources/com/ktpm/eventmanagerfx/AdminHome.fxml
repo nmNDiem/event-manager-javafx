@@ -1,21 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.eventmanagerfx.AdminHomeController">
    <stylesheets>
-      <URL value="@../../../styles/home.css" />
       <URL value="@../../../styles/styles.css" />
+      <URL value="@../../../styles/home.css" />
+      <URL value="@../../../styles/admin-home.css" />
    </stylesheets>
    <children>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="190.0" style="-fx-background-color: #1e1834;">
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="190.0" styleClass="vbox-menu">
          <children>
-            <Button fx:id="btnEvent" maxWidth="-Infinity" mnemonicParsing="false" onAction="#loadEventView" styleClass="btn-cate" text="Sự kiện" />
-            <Button fx:id="btnLocaion" maxWidth="-Infinity" mnemonicParsing="false" styleClass="btn-cate" text="Địa điểm" />
+            <Label fx:id="lbHello" alignment="CENTER" contentDisplay="CENTER" styleClass="lb-hello" text="Xin chào, Admin!" textAlignment="CENTER" wrapText="true">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+            <Button fx:id="btnEvent" maxWidth="-Infinity" mnemonicParsing="false" onAction="#loadEventView" styleClass="btn-menu-item" text="Quản lý sự kiện" />
+            <Button fx:id="btnLocaion" maxWidth="-Infinity" mnemonicParsing="false" styleClass="btn-menu-item" text="Quản lý địa điểm" />
+            <Button mnemonicParsing="false" onAction="#logoutAdminHander" styleClass="btn-logout" text="Đăng xuất">
+               <graphic>
+                  <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../images/logout-white.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
          </children>
       </VBox>
       <AnchorPane fx:id="mainContent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1010.0" />
