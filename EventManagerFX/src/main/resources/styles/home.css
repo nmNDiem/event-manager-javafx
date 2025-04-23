@@ -1,23 +1,53 @@
-.btn-cate {
+.vbox-menu {
+    -fx-background-color: #6f6af8;
+    /*-fx-padding: 20;*/
+}
+
+.lb-hello {
+    -fx-text-fill: #fdfffd;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-padding: 20;
     -fx-pref-width: Infinity;
-    -fx-pref-height: 50;
+}
+
+.btn-logout {
     -fx-background-color: transparent;
-    -fx-text-fill: #d3cbf3;
-    -fx-font-size: 18;
+    -fx-text-fill: #fdfffd;
+    -fx-font-size: 13;
+    -fx-cursor: hand;
+    -fx-pref-width: Infinity;
+}
+
+.btn-logout:hover {
+    -fx-font-weight: bold;
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.btn-cate {
+    -fx-background-color: #e5e7f6;
+    -fx-background-radius: 15;
+    -fx-text-fill: #141140;
+    -fx-font-size: 15;
     -fx-font-weight: bold;
     -fx-alignment: center;
     -fx-cursor: hand;
 }
 
 .btn-cate:hover {
-    /*-fx-border-color: #4c4665;*/
-    /*-fx-border-width: 1px;*/
-    -fx-background-color: #b0521c;
-    -fx-effect: dropshadow(gaussian, #41437e, 20, 0.1, 2, 2);
+    -fx-background-color: #d1d8f5;
+    -fx-effect: dropshadow(gaussian, #d1d8f5, 10, 0.1, 1, 1);
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
 }
 
 .flowpane-event-container {
-    -fx-background-color: linear-gradient(to top, #2c2638, #180a29);
+    -fx-background-color: #f8fafb;
 }
+
+.scroll-pane {
+    -fx-background-insets: 0;
+}
+
+

@@ -5,7 +5,9 @@
 
 .root {
     /*-fx-font-family: "Roboto";*/
-    -fx-background-color: linear-gradient(to top, #2c2638, #180a29);
+    /*-fx-background-color: linear-gradient(to top, #2c2638, #180a29);*/
+    
+    -fx-background-color: #f8fafb;
 }
 
 

@@ -4,6 +4,7 @@
  */
 package com.ktpm.eventmanagerfx;
 
+import com.ktpm.pojo.User;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -24,9 +25,18 @@ import javafx.scene.paint.Color;
  * @author admin
  */
 public class Utils {
+    private static User currentUser;
+
+    public static void setCurrentUser(User user) {
+        currentUser = user;
+    }
+
+    public static User getCurrentUser() {
+        return currentUser;
+    }
 
     private static final DateTimeFormatter DEFAULT_DATE_TIME_FORMATTER
-            = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+            = DateTimeFormatter.ofPattern("HH:mm - dd/MM/yyyy");
 
     public static String formatDateTime(LocalDateTime dateTime) {
         return dateTime != null ? DEFAULT_DATE_TIME_FORMATTER.format(dateTime) : "";

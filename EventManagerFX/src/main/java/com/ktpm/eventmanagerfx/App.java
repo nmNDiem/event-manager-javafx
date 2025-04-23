@@ -16,24 +16,26 @@ public class App extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         stage = primaryStage;
-        scene = new Scene(loadFXML("AdminHome"));
-        
+        scene = new Scene(loadFXML("Login"));
+
         stage.setScene(scene);
         stage.setTitle("Quản lý tổ chức sự kiện");
-//        stage.setMaximized(true);
         stage.centerOnScreen();
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml));
+    static void setScene(String fxml) throws IOException {
+        Scene newScene = new Scene(loadFXML(fxml));
+
+        stage.setScene(newScene);
+        stage.centerOnScreen();
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
         return fxmlLoader.load();
     }
-    
+
     public static Stage getStage() {
         return stage;
     }
