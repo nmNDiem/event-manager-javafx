@@ -13,8 +13,8 @@
 
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.eventmanagerfx.LoginController">
    <stylesheets>
-      <URL value="@../../../styles/sign-up.css" />
       <URL value="@../../../styles/styles.css" />
+      <URL value="@../../../styles/sign-up.css" />
    </stylesheets>
    <children>
       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="33.0" prefWidth="230.0" styleClass="title" text="Đăng nhập" textAlignment="CENTER">

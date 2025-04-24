@@ -63,7 +63,7 @@ public class SignUpController implements Initializable {
 
         if (success) {
             Utils.showAlert("Đăng ký thành công!");
-            App.setRoot("Login");
+            App.setScene("Login");
         } else {
             Utils.showAlert("Đăng ký thất bại!");
         }
@@ -84,6 +84,6 @@ public class SignUpController implements Initializable {
     }
 
     public void goToLogin() throws IOException {
-        App.setRoot("Login");
+        App.setScene("Login");
     }
 }

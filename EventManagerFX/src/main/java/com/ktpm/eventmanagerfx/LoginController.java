@@ -4,6 +4,7 @@
  */
 package com.ktpm.eventmanagerfx;
 
+import com.ktpm.pojo.User;
 import com.ktpm.services.UserServices;
 import java.io.IOException;
 import java.net.URL;
@@ -16,36 +17,45 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 public class LoginController implements Initializable {
-    @FXML TextField txtEmailLogin;
-    @FXML PasswordField txtPasswordLogin;
-    @FXML Button btnLogin;
-    
+
+    @FXML
+    TextField txtEmailLogin;
+    @FXML
+    PasswordField txtPasswordLogin;
+    @FXML
+    Button btnLogin;
+
     UserServices userServices = new UserServices();
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // disable button Đăng nhập khi chưa điền đầy đủ thông tin
         btnLogin.disableProperty().bind(
                 txtEmailLogin.textProperty().isEmpty()
-            .or(txtPasswordLogin.textProperty().isEmpty())
+                        .or(txtPasswordLogin.textProperty().isEmpty())
         );
     }
 
     public void loginHandler() throws SQLException, IOException {
         String email = txtEmailLogin.getText().trim();
         String password = txtPasswordLogin.getText().trim();
-        
-        boolean success = userServices.authenticate(email, password);
-        
-        if (success) {
-            Utils.showAlert("Đăng nhập thành công!");
-            App.setRoot("Home");
+
+        User user = userServices.authenticate(email, password);
+
+        if (user != null) {
+            Utils.setCurrentUser(user);
+
+            if (user.getRole().equals("ADMIN")) {
+                App.setScene("AdminHome");
+            } else {
+                App.setScene("Home");
+            }
         } else {
             Utils.showAlert("Email hoặc mật khẩu không đúng!");
         }
     }
-    
+
     public void goToSignUp() throws IOException {
-        App.setRoot("SignUp");
+        App.setScene("SignUp");
     }
 }

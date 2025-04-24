@@ -1,3 +1,7 @@
+.root {
+    -fx-background-color: #6f6af8;
+}
+
 .title {
     -fx-text-fill: #fefefe;
     -fx-font-size: 26;
@@ -6,9 +10,9 @@
 }
 
 .input {
-    -fx-background-color: #403a51;
+    -fx-background-color: #ffffff;
     -fx-prompt-text-fill: #898398;
-    -fx-text-fill: #f9f8fe;
+    -fx-text-fill: #24215b;
     -fx-font-size: 14;
     -fx-border-radius: 5;
     -fx-pref-width: 200px;
@@ -20,11 +24,16 @@
 }
 
 .button-sign-up {
-    -fx-background-color: #6d54b5;
+    -fx-background-color: #1c1954;
     -fx-font-size: 15;
     -fx-text-fill: #fdfafd;
     -fx-cursor: hand;
     -fx-pref-height: 35;
+    -fx-font-weight: bold;
+}
+
+.button-sign-up:hover {
+    -fx-background-color: #ef9815;
 }
 
 .normal-lable {
@@ -33,7 +42,7 @@
 
 .button-text {
     -fx-background-color: transparent;
-    -fx-text-fill: #c3bae3;
+    -fx-text-fill: #f5f7fd;
     -fx-font-weight: bold;
     -fx-underline: true;
     -fx-cursor: hand;

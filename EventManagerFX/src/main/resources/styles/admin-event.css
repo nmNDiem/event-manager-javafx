@@ -1,7 +1,7 @@
-/*
- * Empty Stylesheet file.
- */
+.lb-title {
+    -fx-text-fill: #1d1852;
+}
 
-.mainFxmlClass {
-
+.lb-field {
+    -fx-text-fill: #1d1852;
 }

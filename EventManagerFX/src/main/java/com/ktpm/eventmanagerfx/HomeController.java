@@ -18,8 +18,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 
@@ -31,15 +34,18 @@ import javafx.scene.shape.Rectangle;
 public class HomeController implements Initializable {
 
     @FXML
-    VBox cateContainer;
+    HBox cateContainer;
     @FXML
     FlowPane eventContainer;
+    @FXML
+    Label lbHello;
 
     CategoryServices cateServices = new CategoryServices();
     EventServices eventServices = new EventServices();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        lbHello.setText("Xin chào, " + Utils.getCurrentUser().getFullName());
         loadCates();
         loadEvents();
     }
@@ -52,6 +58,7 @@ public class HomeController implements Initializable {
                 Button cateBtn = new Button(c.getName());
 
                 cateBtn.getStyleClass().add("btn-cate");
+                HBox.setMargin(cateBtn, new Insets(0, 0, 0, 20));
 
                 cateContainer.getChildren().add(cateBtn);
             }
@@ -69,13 +76,8 @@ public class HomeController implements Initializable {
                 VBox eventCard = loader.load();
                 EventCardController controller = loader.getController();
 
-                controller.setEventData(e.getImageUrl(), e.getName(), e.getStartTime().toString());
-
-                // bo goc event card
-                Rectangle clip = new Rectangle(0, 0, 250, 240);
-                clip.setArcWidth(20);
-                clip.setArcHeight(20);
-                eventCard.setClip(clip);
+                controller.setEventData(e.getImageUrl(), e.getName(), e.getStartTime());
+                controller.setEvent(e);
 
                 eventContainer.getChildren().add(eventCard);
             }
@@ -83,5 +85,16 @@ public class HomeController implements Initializable {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
         }
 
+    }
+
+    @FXML
+    public void logoutHander() {
+        try {
+            Utils.setCurrentUser(null);
+            App.setScene("Login");
+        } catch (IOException ex) {
+            Utils.showAlert("Xảy ra lỗi khi đăng xuất!");
+            ex.printStackTrace();
+        }
     }
 }

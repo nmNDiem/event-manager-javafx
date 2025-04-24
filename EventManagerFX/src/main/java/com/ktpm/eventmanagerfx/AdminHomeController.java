@@ -44,4 +44,15 @@ public class AdminHomeController implements Initializable {
             Utils.showAlert("Lỗi: Không thể mở màn hình này!");
         }
     }
+    
+        @FXML
+    public void logoutAdminHander() {
+        try {
+            Utils.setCurrentUser(null);
+            App.setScene("Login");
+        } catch (IOException ex) {
+            Utils.showAlert("Xảy ra lỗi khi đăng xuất!");
+            ex.printStackTrace();
+        }
+    }
 }
