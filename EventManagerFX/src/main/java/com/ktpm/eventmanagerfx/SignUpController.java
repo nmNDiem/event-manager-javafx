@@ -45,9 +45,19 @@ public class SignUpController implements Initializable {
                         .or(txtPassword.textProperty().isEmpty())
                         .or(txtConfirmPassword.textProperty().isEmpty())
         );
+        
+        txtConfirmPassword.setOnKeyPressed(event -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                try {
+                    signUpHandler();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
-    public void signUpHandler(ActionEvent e) throws SQLException, IOException {
+    public void signUpHandler() throws SQLException, IOException {
         String fullName = txtFullName.getText().trim();
         String phone = txtPhone.getText().trim();
         String email = txtEmail.getText().trim();

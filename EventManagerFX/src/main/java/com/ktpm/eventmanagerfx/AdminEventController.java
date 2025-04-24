@@ -7,9 +7,11 @@ package com.ktpm.eventmanagerfx;
 import com.ktpm.pojo.Category;
 import com.ktpm.pojo.Event;
 import com.ktpm.pojo.Location;
+import com.ktpm.pojo.Registration;
 import com.ktpm.services.CategoryServices;
 import com.ktpm.services.EventServices;
 import com.ktpm.services.LocationServices;
+import com.ktpm.services.RegistrationServices;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -22,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -35,6 +38,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -50,7 +54,7 @@ import javafx.util.StringConverter;
  * @author admin
  */
 public class AdminEventController implements Initializable {
-
+    
     @FXML
     TextField txtId;
     @FXML
@@ -85,23 +89,38 @@ public class AdminEventController implements Initializable {
     Button btnClear;
     @FXML
     Button btnUploadImg;
-
+    
     EventServices eventServices = new EventServices();
     CategoryServices categoryServices = new CategoryServices();
     LocationServices locationServices = new LocationServices();
-
+    RegistrationServices regServices = new RegistrationServices();
+    
     private static Event selectedEvent;
     private static File selectedFile;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         createColumns();
         loadTableData();
-        createActionColumn();
+        createDeleteColumn();
+        createCancelColumn();
         loadComboBoxes();
         setupTimeSpinner(startTimeSpn);
         setupTimeSpinner(endTimeSpn);
         setVisibleImg(false, true);
+
+        // Nếu event bị hủy => dòng có background xám
+        eventTable.setRowFactory(tv -> new TableRow<>() {
+            @Override
+            protected void updateItem(Event event, boolean empty) {
+                super.updateItem(event, empty);
+                if (event != null && !event.isActive()) {
+                    setStyle("-fx-background-color: #6e6c6c;");
+                } else {
+                    setStyle("");
+                }
+            }
+        });
 
         // xử lý khi click vào 1 event trong table
         eventTable.setOnMouseClicked(event -> {
@@ -117,7 +136,7 @@ public class AdminEventController implements Initializable {
             }
         });
     }
-
+    
     public void createColumns() {
         TableColumn<Event, Integer> idCol = Utils.createColumn("ID", "id", 30);
         TableColumn<Event, Integer> categoryCol = Utils.createColumn("Thể loại", "categoryId", 80);
@@ -129,31 +148,82 @@ public class AdminEventController implements Initializable {
         TableColumn<Event, BigDecimal> priceCol = Utils.createColumn("Giá vé", "price", 90);
         TableColumn<Event, String> imageCol = Utils.createColumn("Ảnh", "imageUrl", 100);
         TableColumn<Event, String> descCol = Utils.createColumn("Mô tả", "description", 200);
-
+        
         eventTable.getColumns().addAll(
                 idCol, categoryCol, nameCol, locationCol,
                 startCol, endCol, ticketCol, priceCol,
                 imageCol, descCol
         );
     }
-
-    public void createActionColumn() {
+    
+    public void createDeleteColumn() {
         TableColumn<Event, Void> actionCol = Utils.createButtonColumn("", "Xóa", Color.ORANGERED, Color.WHITE, event -> {
-                    Optional<ButtonType> result = Utils.showConfirmAlert("Xác nhận xóa sự kiện [" + event.getName() + "]?");
-
-                    if (result.isPresent() && result.get() == ButtonType.YES) {
-                        if (eventServices.deleteEventById(event.getId())) {
-                            eventTable.getItems().remove(event);
-                            Utils.showAlert("Xóa sự kiện thành công!");
-                        } else {
-                            Utils.showAlert("Lỗi: Xóa sự kiện thất bại!");
-                        }
-                    }
-                });
-
+            Optional<ButtonType> result = Utils.showConfirmAlert("Xác nhận xóa sự kiện [" + event.getName() + "]?");
+            
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                if (eventServices.deleteEventById(event.getId())) {
+                    eventTable.getItems().remove(event);
+                    Utils.showAlert("Xóa sự kiện thành công!");
+                } else {
+                    Utils.showAlert("Lỗi: Xóa sự kiện thất bại!");
+                }
+            }
+        });
+        
         eventTable.getColumns().add(0, actionCol);
     }
+    
+    public void createCancelColumn() {
+        TableColumn<Event, Void> toggleCol = Utils.createToggleButtonColumn(
+                "Trạng thái",
+                Event::isActive,
+                "Hủy sự kiện", "Khôi phục",
+                "orange", "green",
+                event -> {
+                    boolean newStatus = !event.isActive();
+                    
+                    if (event.getEndTime().isBefore(LocalDateTime.now())) {
+                        Utils.showAlert("Không thể thay đổi trạng thái sự kiện đã kết thúc!");
+                        return;
+                    }
+                    
+                    Optional<ButtonType> result = Utils.showConfirmAlert(
+                            newStatus ? "Xác nhận khôi phục sự kiện này?"
+                                    : "Xác nhận hủy sự kiện này và hoàn tiền cho tất cả người tham gia?");
+                    
+                    if (result.isPresent() && result.get() == ButtonType.YES) {
+                        if (eventServices.setEventActive(event.getId(), newStatus)) {
+                            event.setActive(newStatus);
+                            Utils.showAlert(newStatus ? "Khôi phục sự kiện thành công!" : "Đã hủy sự kiện!");
 
+                            // nếu hủy sự kiện => hoàn tiền
+                            if (!newStatus) {
+                                refund(event.getId());
+                            }
+                        } else {
+                            Utils.showAlert("Cập nhật trạng thái thất bại!");
+                        }
+                    }
+                    
+                }
+        );
+        
+        eventTable.getColumns().add(1, toggleCol);
+    }
+    
+    public void refund(int eventId) {
+        List<Registration> regList = regServices.getRegsByEventId(eventId, "PAID");
+        
+        for (Registration r : regList) {
+            if (regServices.updatePaymentStatus(r)) {
+                r.setPaymentStatus("REFUNDED");
+            } else {
+                Utils.showAlert("Xảy ra lỗi khi hoàn tiền cho user " + r.getUserId());
+            }
+        }
+        Utils.showAlert("Đã hoàn tất việc hoàn tiền!");
+    }
+    
     public void loadTableData() {
         try {
             eventTable.setItems(eventServices.getEvents());
@@ -162,7 +232,7 @@ public class AdminEventController implements Initializable {
             Logger.getLogger(AdminEventController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void loadComboBoxes() {
         try {
             cbbCate.setItems(categoryServices.getCates());
@@ -170,7 +240,7 @@ public class AdminEventController implements Initializable {
             Utils.showAlert("Lỗi: Không thể tải danh sách thể loại!");
             Logger.getLogger(AdminEventController.class.getName()).log(Level.SEVERE, null, ex);
         }
-
+        
         try {
             cbbLocation.setItems(locationServices.getLocations());
         } catch (SQLException ex) {
@@ -178,39 +248,39 @@ public class AdminEventController implements Initializable {
             Logger.getLogger(AdminEventController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     private void setupTimeSpinner(Spinner<LocalTime> spinner) {
         spinner.setValueFactory(new SpinnerValueFactory<LocalTime>() {
             {
                 setConverter(new StringConverter<>() {
                     DateTimeFormatter fmt = DateTimeFormatter.ofPattern("HH:mm");
-
+                    
                     @Override
                     public String toString(LocalTime t) {
                         return t != null ? fmt.format(t) : "";
                     }
-
+                    
                     @Override
                     public LocalTime fromString(String s) {
                         return LocalTime.parse(s, fmt);
                     }
                 });
             }
-
+            
             @Override
             public void decrement(int steps) {
                 setValue(getValue().minusMinutes(steps * 15));
             }
-
+            
             @Override
             public void increment(int steps) {
                 setValue(getValue().plusMinutes(steps * 15));
             }
         });
-
+        
         spinner.setEditable(true);
     }
-
+    
     public void loadEventToForm(Event e) throws SQLException {
         txtId.setText(String.valueOf(e.getId()));
         txtName.setText(e.getName());
@@ -223,10 +293,10 @@ public class AdminEventController implements Initializable {
         // Set ngày và giờ (tách từ LocalDateTime)
         LocalDateTime start = e.getStartTime();
         LocalDateTime end = e.getEndTime();
-
+        
         startDatePk.setValue(start.toLocalDate());
         startTimeSpn.getValueFactory().setValue(start.toLocalTime());
-
+        
         endDatePk.setValue(end.toLocalDate());
         endTimeSpn.getValueFactory().setValue(end.toLocalTime());
 
@@ -247,7 +317,7 @@ public class AdminEventController implements Initializable {
             setVisibleImg(false, true);
         }
     }
-
+    
     @FXML
     public void addEventHandler() {
         // lấy dữ liệu từ các ô input
@@ -262,14 +332,14 @@ public class AdminEventController implements Initializable {
         String price = txtPrice.getText().trim();
         Image image = eventImgView.getImage();
         String description = txtDesc.getText().trim();
-
+        
         if (name.isEmpty() || description.isEmpty() || category == null || location == null
                 || startDate == null || endDate == null || startTime == null || endTime == null
                 || tickets.isEmpty() || price.isEmpty() || image == null) {
             Utils.showAlert("Vui lòng điền đầy đủ thông tin!");
             return;
         }
-
+        
         LocalDateTime startDatetime = LocalDateTime.of(startDate, startTime);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
         // Kiểm tra ngày tổ chức < ngày hiện tại
@@ -283,14 +353,14 @@ public class AdminEventController implements Initializable {
             Utils.showAlert("Lỗi: Trùng địa điểm và giờ với sự kiện khác!");
             return;
         }
-
+        
         int availableTickets = Integer.parseInt(tickets);
         // Kiểm tra số lượng khách không vượt quá sức chứa địa điểm
         if (availableTickets > location.getCapacity()) {
             Utils.showAlert("Số lượng khách không được vượt quá sức chứa địa điểm!");
             return;
         }
-
+        
         String imageUrl;
         // nếu chọn ảnh mới thì lưu vào db với url này
         if (selectedFile != null) {
@@ -298,7 +368,7 @@ public class AdminEventController implements Initializable {
         } else {
             imageUrl = selectedEvent.getImageUrl();
         }
-
+        
         Event event = new Event();
         event.setName(name);
         event.setCategoryId(category.getId());
@@ -309,7 +379,7 @@ public class AdminEventController implements Initializable {
         event.setPrice(new BigDecimal(price));
         event.setImageUrl(imageUrl);
         event.setDescription(description);
-
+        
         if (eventServices.addEvent(event)) {
             if (selectedFile != null) {
                 copyImgIntoResources();
@@ -321,7 +391,7 @@ public class AdminEventController implements Initializable {
             Utils.showAlert("Lỗi: Thêm sự kiện thất bại!");
         }
     }
-
+    
     @FXML
     public void updateEventHandler() {
         if (selectedEvent == null) {
@@ -342,14 +412,14 @@ public class AdminEventController implements Initializable {
         String price = txtPrice.getText().trim();
         Image image = eventImgView.getImage();
         String description = txtDesc.getText().trim();
-
+        
         if (name.isEmpty() || description.isEmpty() || category == null || location == null
                 || startDate == null || endDate == null || startTime == null || endTime == null
                 || tickets.isEmpty() || price.isEmpty() || image == null) {
             Utils.showAlert("Vui lòng điền đầy đủ thông tin!");
             return;
         }
-
+        
         LocalDateTime startDatetime = LocalDateTime.of(startDate, startTime);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
         // Kiểm tra ngày tổ chức < ngày hiện tại
@@ -357,21 +427,21 @@ public class AdminEventController implements Initializable {
             Utils.showAlert("Ngày tổ chức phải lớn hơn ngày hiện tại!");
             return;
         }
-
+        
         int eventId = Integer.parseInt(id);
         // Kiểm tra trùng địa điểm và giờ
         if (eventServices.isEventTimeConflict(eventId, location.getId(), startDatetime, endDateTime)) {
             Utils.showAlert("Lỗi: Trùng địa điểm và giờ với sự kiện khác!");
             return;
         }
-
+        
         int availableTickets = Integer.parseInt(tickets);
         // Kiểm tra số lượng khách không vượt quá sức chứa địa điểm
         if (availableTickets > location.getCapacity()) {
             Utils.showAlert("Số lượng khách không được vượt quá sức chứa địa điểm!");
             return;
         }
-
+        
         String imageUrl;
         // nếu chọn ảnh mới thì lưu vào db với url này
         if (selectedFile != null) {
@@ -379,7 +449,7 @@ public class AdminEventController implements Initializable {
         } else {
             imageUrl = selectedEvent.getImageUrl();
         }
-
+        
         Event event = new Event();
         event.setId(eventId);
         event.setName(name);
@@ -391,7 +461,7 @@ public class AdminEventController implements Initializable {
         event.setPrice(new BigDecimal(price));
         event.setImageUrl(imageUrl);
         event.setDescription(description);
-
+        
         if (eventServices.updateEvent(event)) {
             if (selectedFile != null) {
                 copyImgIntoResources();
@@ -403,7 +473,7 @@ public class AdminEventController implements Initializable {
             Utils.showAlert("Lỗi: Cập nhật sự kiện thất bại!");
         }
     }
-
+    
     @FXML
     public void clearForm() {
         txtId.clear();
@@ -418,10 +488,10 @@ public class AdminEventController implements Initializable {
         txtPrice.clear();
         txtDesc.clear();
         eventImgView.setImage(null);
-
+        
         setVisibleImg(false, true);
     }
-
+    
     @FXML
     public void uploadImage() {
         FileChooser fileChooser = new FileChooser();
@@ -430,14 +500,14 @@ public class AdminEventController implements Initializable {
 
         // mở hộp thoại chọn file
         selectedFile = fileChooser.showOpenDialog(null);
-
+        
         if (selectedFile != null) {
             Image image = new Image(selectedFile.toURI().toString());
             eventImgView.setImage(image);
             setVisibleImg(true, false);
         }
     }
-
+    
     @FXML
     public void copyImgIntoResources() {
         String targetPath = "src/main/resources/images/" + selectedFile.getName();
@@ -450,10 +520,10 @@ public class AdminEventController implements Initializable {
             Logger.getLogger(AdminEventController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
     public void setVisibleImg(boolean imgView, boolean btnUpload) {
         eventImgView.setVisible(imgView);
         btnUploadImg.setVisible(btnUpload);
     }
-
+    
 }

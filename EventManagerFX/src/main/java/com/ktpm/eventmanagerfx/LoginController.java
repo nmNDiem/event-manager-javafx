@@ -34,6 +34,16 @@ public class LoginController implements Initializable {
                 txtEmailLogin.textProperty().isEmpty()
                         .or(txtPasswordLogin.textProperty().isEmpty())
         );
+
+        txtPasswordLogin.setOnKeyPressed(event -> {
+            if (event.getCode().toString().equals("ENTER")) {
+                try {
+                    loginHandler();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     public void loginHandler() throws SQLException, IOException {

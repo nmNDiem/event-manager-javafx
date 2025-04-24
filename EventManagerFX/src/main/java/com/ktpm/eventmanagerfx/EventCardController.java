@@ -7,6 +7,7 @@ package com.ktpm.eventmanagerfx;
 import com.ktpm.pojo.Event;
 import com.ktpm.pojo.User;
 import com.ktpm.services.RegistrationServices;
+import java.math.BigDecimal;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -35,9 +36,7 @@ public class EventCardController implements Initializable {
     @FXML
     Label lbStartTime;
     @FXML
-    VBox cardContainer;
-    @FXML
-    Button btnBuy;
+    Label lbPrice;
 
     private Event event;
 
@@ -47,10 +46,11 @@ public class EventCardController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }
 
-    public void setEventData(String imgUrl, String name, LocalDateTime startTime) {
+    public void setEventData(String imgUrl, String name, LocalDateTime startTime, BigDecimal price) {
         imgView.setImage(new Image(imgUrl));
         lbName.setText(name);
         lbStartTime.setText(Utils.formatDateTime(startTime));
+        lbPrice.setText(Utils.formatCurrency(price));
 
         // bo goc event card
         Rectangle clip = new Rectangle(0, 0, 200, 210);
@@ -68,7 +68,8 @@ public class EventCardController implements Initializable {
         if (!canRegister(event, Utils.getCurrentUser()))
             return;
         
-        Optional<ButtonType> result = Utils.showConfirmAlert("Bạn chắc chắn muốn tham gia sự kiện này?");
+        Optional<ButtonType> result = Utils.showConfirmAlert(
+                "Thanh toán " + Utils.formatCurrency(event.getPrice()) + "?");
         if (result.isPresent() && result.get() == ButtonType.YES) {
 
             User currentUser = Utils.getCurrentUser();
@@ -90,13 +91,13 @@ public class EventCardController implements Initializable {
 
         // - Đã đky sự kiện này
         if (regisService.isUserRegistered(event.getId(), currentUser.getId())) {
-            Utils.showAlert("Bạn đã đăng ký sự kiện này!");
+            Utils.showAlert("Bạn đã đăng ký sự kiện này trước đó rồi!");
             return false;
         }
         
         // - Không thể đky trước thời gian bắt đầu < 60p
         if (LocalDateTime.now().isAfter(event.getStartTime().minusMinutes(60))) {
-            Utils.showAlert("Không thể đăng ký. Sự kiện sẽ bắt đầu trong vòng 60 phút.");
+            Utils.showAlert("Không thể đăng ký. Sự kiện sẽ bắt đầu trong vòng 60 phút nũa.");
             return false;
         }
 
