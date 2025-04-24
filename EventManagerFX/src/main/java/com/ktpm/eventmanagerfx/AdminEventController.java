@@ -35,6 +35,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -97,11 +98,25 @@ public class AdminEventController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         createColumns();
         loadTableData();
-        createActionColumn();
+        createDeleteColumn();
+        createCancelColumn();
         loadComboBoxes();
         setupTimeSpinner(startTimeSpn);
         setupTimeSpinner(endTimeSpn);
         setVisibleImg(false, true);
+
+        // Nếu event bị hủy => dòng có background xám
+        eventTable.setRowFactory(tv -> new TableRow<>() {
+            @Override
+            protected void updateItem(Event event, boolean empty) {
+                super.updateItem(event, empty);
+                if (event != null && !event.isActive()) {
+                    setStyle("-fx-background-color: #6e6c6c;");
+                } else {
+                    setStyle("");
+                }
+            }
+        });
 
         // xử lý khi click vào 1 event trong table
         eventTable.setOnMouseClicked(event -> {
@@ -137,21 +152,54 @@ public class AdminEventController implements Initializable {
         );
     }
 
-    public void createActionColumn() {
+    public void createDeleteColumn() {
         TableColumn<Event, Void> actionCol = Utils.createButtonColumn("", "Xóa", Color.ORANGERED, Color.WHITE, event -> {
-                    Optional<ButtonType> result = Utils.showConfirmAlert("Xác nhận xóa sự kiện [" + event.getName() + "]?");
+            Optional<ButtonType> result = Utils.showConfirmAlert("Xác nhận xóa sự kiện [" + event.getName() + "]?");
 
-                    if (result.isPresent() && result.get() == ButtonType.YES) {
-                        if (eventServices.deleteEventById(event.getId())) {
-                            eventTable.getItems().remove(event);
-                            Utils.showAlert("Xóa sự kiện thành công!");
-                        } else {
-                            Utils.showAlert("Lỗi: Xóa sự kiện thất bại!");
-                        }
-                    }
-                });
+            if (result.isPresent() && result.get() == ButtonType.YES) {
+                if (eventServices.deleteEventById(event.getId())) {
+                    eventTable.getItems().remove(event);
+                    Utils.showAlert("Xóa sự kiện thành công!");
+                } else {
+                    Utils.showAlert("Lỗi: Xóa sự kiện thất bại!");
+                }
+            }
+        });
 
         eventTable.getColumns().add(0, actionCol);
+    }
+
+    public void createCancelColumn() {
+        TableColumn<Event, Void> toggleCol = Utils.createToggleButtonColumn(
+                "Trạng thái",
+                Event::isActive,
+                "Hủy sự kiện", "Khôi phục",
+                "orange", "green",
+                event -> {
+                    boolean newStatus = !event.isActive();
+                    
+                    if (event.getEndTime().isBefore(LocalDateTime.now())) {
+                        Utils.showAlert("Không thể thay đổi trạng thái sự kiện đã kết thúc!");
+                        return;
+                    }
+                    
+                    Optional<ButtonType> result = Utils.showConfirmAlert(
+                            newStatus ? "Xác nhận khôi phục sự kiện này?" : "Xác nhận hủy sự kiện này?");
+
+                    if (result.isPresent() && result.get() == ButtonType.YES) {
+
+                        if (eventServices.setEventActive(event.getId(), newStatus)) {
+                            event.setActive(newStatus);
+                            Utils.showAlert(newStatus ? "Khôi phục sự kiện thành công!" : "Đã hủy sự kiện!");
+                        } else {
+                            Utils.showAlert("Cập nhật trạng thái thất bại!");
+                        }
+                    }
+
+                }
+        );
+
+        eventTable.getColumns().add(1, toggleCol);
     }
 
     public void loadTableData() {

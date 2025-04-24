@@ -22,13 +22,14 @@ public class Event {
     private BigDecimal price;
     private String imageUrl;
     private String description;
+    private boolean isActive;
 
     public Event() {
     }
 
     public Event(int id, int categoryId, String name, int locationId, 
             LocalDateTime startTime, LocalDateTime endTime, int availableTickets, 
-            BigDecimal price, String imageUrl, String description) {
+            BigDecimal price, String imageUrl, String description, boolean isActive) {
         this.id = id;
         this.categoryId = categoryId;
         this.name = name;
@@ -39,6 +40,7 @@ public class Event {
         this.price = price;
         this.imageUrl = imageUrl;
         this.description = description;
+        this.isActive = isActive;
     }
     
     public Event(int categoryId, String name, int locationId, 
@@ -193,6 +195,20 @@ public class Event {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * @return the isActive
+     */
+    public boolean isActive() {
+        return isActive;
+    }
+
+    /**
+     * @param isActive the isActive to set
+     */
+    public void setActive(boolean isActive) {
+        this.isActive = isActive;
     }
 
     
