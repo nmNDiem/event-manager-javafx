@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
 -- Host: localhost    Database: eventdb
 -- ------------------------------------------------------
--- Server version	8.0.35
+-- Server version	9.1.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -51,20 +51,20 @@ DROP TABLE IF EXISTS `event`;
 CREATE TABLE `event` (
   `id` int NOT NULL AUTO_INCREMENT,
   `category_id` int DEFAULT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `location_id` int NOT NULL,
   `start_time` datetime NOT NULL,
   `end_time` datetime NOT NULL,
   `available_tickets` int NOT NULL,
   `price` decimal(15,0) NOT NULL DEFAULT '0',
-  `image_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `image_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_event` (`location_id`,`start_time`),
   KEY `category_id` (`category_id`),
   CONSTRAINT `event_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL,
   CONSTRAINT `event_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ',1,'2025-04-10 09:00:00','2025-04-10 11:00:00',100,50000,'/images/event3.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.'),(2,1,'Lễ hội Âm nhạc',2,'2025-05-15 18:00:00','2025-05-15 22:30:00',500,20000,'/images/event1.jpeg','Lễ hội âm nhạc là sự kiện sôi động, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.');
+INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ',1,'2025-04-10 09:00:00','2025-04-10 11:00:00',100,50000,'/images/event3.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.'),(2,1,'Lễ hội Âm nhạc',2,'2025-05-15 18:00:00','2025-05-15 22:30:00',500,20000,'/images/event1.jpeg','Lễ hội âm nhạc là sự kiện sôi động, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.'),(7,5,'Triển lãm tranh',3,'2025-05-04 08:30:00','2025-05-04 16:30:00',50,75000,'/images/event4.jpg','Triển lãm tranh là sự kiện trưng bày các tác phẩm hội họa của một hoặc nhiều nghệ sĩ nhằm giới thiệu đến công chúng, tôn vinh nghệ thuật và kết nối người xem với cảm xúc, thông điệp mà bức tranh truyền tải.'),(10,5,'Hội chợ thương mại',2,'2025-05-10 07:30:00','2025-05-11 17:30:00',300,0,'/images/event5.png','Hội chợ thương mại là sự kiện quy tụ nhiều doanh nghiệp tham gia trưng bày, giới thiệu và quảng bá sản phẩm, dịch vụ đến khách hàng và đối tác. Đây là cơ hội để giao lưu, tìm kiếm cơ hội hợp tác, mở rộng thị trường và thúc đẩy hoạt động kinh doanh.');
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -86,8 +86,8 @@ DROP TABLE IF EXISTS `location`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `location` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `capacity` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -113,8 +113,8 @@ DROP TABLE IF EXISTS `notification`;
 CREATE TABLE `notification` (
   `id` int NOT NULL AUTO_INCREMENT,
   `recipient_id` int NOT NULL,
-  `subject` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `sent_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `recipient_id` (`recipient_id`),
@@ -144,7 +144,7 @@ CREATE TABLE `payment` (
   `registration_id` int NOT NULL,
   `amount` decimal(15,0) NOT NULL,
   `payment_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('SUCCESS','FAILED','REFUNDED') COLLATE utf8mb4_unicode_ci DEFAULT 'SUCCESS',
+  `status` enum('SUCCESS','FAILED','REFUNDED') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'SUCCESS',
   PRIMARY KEY (`id`),
   KEY `registration_id` (`registration_id`),
   CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE
@@ -173,7 +173,7 @@ CREATE TABLE `registration` (
   `event_id` int NOT NULL,
   `user_id` int NOT NULL,
   `registration_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `payment_status` enum('PENDING','PAID','CANCELED') COLLATE utf8mb4_unicode_ci DEFAULT 'PENDING',
+  `payment_status` enum('PENDING','PAID','CANCELED') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'PENDING',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_registration` (`event_id`,`user_id`),
   KEY `user_id` (`user_id`),
@@ -201,11 +201,11 @@ DROP TABLE IF EXISTS `user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `user` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `full_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `phone` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` enum('ADMIN','USER') COLLATE utf8mb4_unicode_ci DEFAULT 'USER',
+  `full_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phone` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `role` enum('ADMIN','USER') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'USER',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -230,4 +230,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-12  1:58:18
+-- Dump completed on 2025-04-24 22:51:35
