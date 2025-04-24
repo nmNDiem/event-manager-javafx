@@ -134,35 +134,6 @@ INSERT INTO `notification` VALUES (1,2,'Nhắc nhở sự kiện','Sự kiện H
 UNLOCK TABLES;
 
 --
--- Table structure for table `payment`
---
-
-DROP TABLE IF EXISTS `payment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `payment` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `registration_id` int NOT NULL,
-  `amount` decimal(15,0) NOT NULL,
-  `payment_time` datetime DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('SUCCESS','FAILED','REFUNDED') COLLATE utf8mb4_unicode_ci DEFAULT 'SUCCESS',
-  PRIMARY KEY (`id`),
-  KEY `registration_id` (`registration_id`),
-  CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `payment`
---
-
-LOCK TABLES `payment` WRITE;
-/*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-INSERT INTO `payment` VALUES (1,1,50000,'2025-04-01 10:00:00','SUCCESS');
-/*!40000 ALTER TABLE `payment` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `registration`
 --
 
@@ -173,8 +144,9 @@ CREATE TABLE `registration` (
   `id` int NOT NULL AUTO_INCREMENT,
   `event_id` int NOT NULL,
   `user_id` int NOT NULL,
-  `registration_time` datetime DEFAULT CURRENT_TIMESTAMP,
-  `payment_status` enum('PENDING','PAID','CANCELED') COLLATE utf8mb4_unicode_ci DEFAULT 'PENDING',
+  `registration_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `payment_amount` decimal(15,0) NOT NULL,
+  `payment_status` enum('PAID','REFUNDED') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'PAID',
   PRIMARY KEY (`id`),
   UNIQUE KEY `unique_registration` (`event_id`,`user_id`),
   KEY `user_id` (`user_id`),
@@ -189,7 +161,7 @@ CREATE TABLE `registration` (
 
 LOCK TABLES `registration` WRITE;
 /*!40000 ALTER TABLE `registration` DISABLE KEYS */;
-INSERT INTO `registration` VALUES (1,1,2,'2025-03-22 20:17:32','PAID'),(2,2,3,'2025-03-22 20:17:32','PENDING'),(4,2,2,'2025-04-23 18:20:37','PENDING');
+INSERT INTO `registration` VALUES (1,1,2,'2025-03-22 20:17:32',50000,'PAID'),(2,2,3,'2025-03-22 20:17:32',20000,'PAID'),(4,2,2,'2025-04-23 18:20:37',20000,'PAID');
 /*!40000 ALTER TABLE `registration` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,4 +203,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-24 15:39:42
+-- Dump completed on 2025-04-24 21:15:39

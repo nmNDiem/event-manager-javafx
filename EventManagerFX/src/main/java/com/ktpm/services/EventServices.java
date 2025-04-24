@@ -54,7 +54,7 @@ public class EventServices {
     public boolean addEvent(Event e) {
         String sql = "INSERT INTO event (category_id, name, location_id, "
                 + "start_time, end_time, available_tickets, price, image_url, description, is_active) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
 
             stm.setInt(1, e.getCategoryId());
@@ -66,6 +66,7 @@ public class EventServices {
             stm.setBigDecimal(7, e.getPrice());
             stm.setString(8, e.getImageUrl());
             stm.setString(9, e.getDescription());
+            stm.setBoolean(10, true);
 
             return stm.executeUpdate() > 0;
         } catch (SQLException ex) {

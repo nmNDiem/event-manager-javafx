@@ -45,7 +45,7 @@ public class HomeController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        lbHello.setText("Xin chào, " + Utils.getCurrentUser().getFullName());
+        lbHello.setText("Xin chào, " + Utils.getCurrentUser().getFullName() + "!");
         loadCates();
         loadEvents();
     }
@@ -76,7 +76,7 @@ public class HomeController implements Initializable {
                 VBox eventCard = loader.load();
                 EventCardController controller = loader.getController();
 
-                controller.setEventData(e.getImageUrl(), e.getName(), e.getStartTime());
+                controller.setEventData(e.getImageUrl(), e.getName(), e.getStartTime(), e.getPrice());
                 controller.setEvent(e);
 
                 eventContainer.getChildren().add(eventCard);

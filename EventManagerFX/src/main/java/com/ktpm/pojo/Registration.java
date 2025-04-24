@@ -4,6 +4,7 @@
  */
 package com.ktpm.pojo;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -15,20 +16,20 @@ public class Registration {
     private int eventId;
     private int userId;
     private LocalDateTime registrationTime;
-    private String status;
+    private BigDecimal paymentAmount;
+    private String paymentStatus;
 
     public Registration() {
     }
 
-    public Registration(int id, int eventId, int userId, LocalDateTime registrationTime, String status) {
+    public Registration(int id, int eventId, int userId, LocalDateTime registrationTime, BigDecimal paymentAmount, String paymentStatus) {
         this.id = id;
         this.eventId = eventId;
         this.userId = userId;
         this.registrationTime = registrationTime;
-        this.status = status;
+        this.paymentAmount = paymentAmount;
+        this.paymentStatus = paymentStatus;
     }
-    
-    
 
     /**
      * @return the id
@@ -87,16 +88,32 @@ public class Registration {
     }
 
     /**
-     * @return the status
+     * @return the paymentAmount
      */
-    public String getStatus() {
-        return status;
+    public BigDecimal getPaymentAmount() {
+        return paymentAmount;
     }
 
     /**
-     * @param status the status to set
+     * @param paymentAmount the paymentAmount to set
      */
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPaymentAmount(BigDecimal paymentAmount) {
+        this.paymentAmount = paymentAmount;
     }
+
+    /**
+     * @return the paymentStatus
+     */
+    public String getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    /**
+     * @param paymentStatus the paymentStatus to set
+     */
+    public void setPaymentStatus(String paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+
+    
 }

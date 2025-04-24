@@ -5,6 +5,8 @@
 package com.ktpm.eventmanagerfx;
 
 import com.ktpm.pojo.User;
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Optional;
@@ -13,12 +15,14 @@ import java.util.function.Predicate;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;
 
 /**
@@ -44,14 +48,21 @@ public class Utils {
         return dateTime != null ? DEFAULT_DATE_TIME_FORMATTER.format(dateTime) : "";
     }
 
+    public static String formatCurrency(BigDecimal amount) {
+        DecimalFormat formatter = new DecimalFormat("#,###₫");
+        return formatter.format(amount);
+    }
+
     public static void showAlert(String content) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, content, ButtonType.OK);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
         alert.showAndWait();
     }
 
     public static Optional<ButtonType> showConfirmAlert(String content) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, content);
         alert.getButtonTypes().setAll(ButtonType.YES, ButtonType.CANCEL);
+        alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 
         return alert.showAndWait();
     }

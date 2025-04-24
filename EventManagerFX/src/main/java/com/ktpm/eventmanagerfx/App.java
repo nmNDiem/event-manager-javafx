@@ -21,6 +21,7 @@ public class App extends Application {
         stage.setScene(scene);
         stage.setTitle("Quản lý tổ chức sự kiện");
         stage.centerOnScreen();
+        stage.setResizable(false);
         stage.show();
     }
 
@@ -29,6 +30,7 @@ public class App extends Application {
 
         stage.setScene(newScene);
         stage.centerOnScreen();
+        stage.setResizable(false);
     }
 
     private static Parent loadFXML(String fxml) throws IOException {
