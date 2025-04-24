@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
 -- Host: localhost    Database: eventdb
 -- ------------------------------------------------------
--- Server version	8.0.35
+-- Server version	9.1.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -74,7 +74,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ',1,'2025-04-10 09:00:00','2025-04-10 11:00:00',99,50000,'/images/event3.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.',0),(2,1,'Lễ hội Âm nhạc',2,'2025-05-15 18:00:00','2025-05-15 22:30:00',499,20000,'/images/event1.jpeg','Lễ hội âm nhạc là sự kiện sôi động, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.',1);
+INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ',1,'2025-04-10 09:00:00','2025-04-10 11:00:00',100,50000,'/images/event3.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.', 1),(2,1,'Lễ hội Âm nhạc',2,'2025-05-15 18:00:00','2025-05-15 22:30:00',500,20000,'/images/event1.jpeg','Lễ hội âm nhạc là sự kiện sôi động, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.', 1),(7,5,'Triển lãm tranh',3,'2025-05-04 08:30:00','2025-05-04 16:30:00',50,75000,'/images/event4.jpg','Triển lãm tranh là sự kiện trưng bày các tác phẩm hội họa của một hoặc nhiều nghệ sĩ nhằm giới thiệu đến công chúng, tôn vinh nghệ thuật và kết nối người xem với cảm xúc, thông điệp mà bức tranh truyền tải.', 0),(10,5,'Hội chợ thương mại',2,'2025-05-10 07:30:00','2025-05-11 17:30:00',300,0,'/images/event5.png','Hội chợ thương mại là sự kiện quy tụ nhiều doanh nghiệp tham gia trưng bày, giới thiệu và quảng bá sản phẩm, dịch vụ đến khách hàng và đối tác. Đây là cơ hội để giao lưu, tìm kiếm cơ hội hợp tác, mở rộng thị trường và thúc đẩy hoạt động kinh doanh.', 1);
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -203,4 +203,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-24 21:15:39
+-- Dump completed on 2025-04-24 22:51:35
