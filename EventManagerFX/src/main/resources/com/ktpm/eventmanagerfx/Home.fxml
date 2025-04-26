@@ -19,7 +19,7 @@
    <children>
       <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="640.0" prefWidth="190.0" styleClass="vbox-menu">
          <children>
-            <Label fx:id="lbHello" styleClass="lb-hello" text="Xin chào, Admin!" wrapText="true" />
+            <Label fx:id="lbHello" alignment="CENTER" contentDisplay="CENTER" styleClass="lb-hello" text="Xin chào, Admin!" textAlignment="CENTER" wrapText="true" />
             <Button mnemonicParsing="false" onAction="#logoutHander" styleClass="btn-logout" text="Đăng xuất">
                <graphic>
                   <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">
