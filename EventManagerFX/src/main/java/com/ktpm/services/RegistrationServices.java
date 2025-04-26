@@ -49,12 +49,13 @@ public class RegistrationServices {
     }
 
     public boolean isUserRegistered(int eventId, int userId) {
-        String sql = "SELECT COUNT(*) FROM registration WHERE event_id = ? AND user_id = ?";
+        String sql = "SELECT COUNT(*) FROM registration WHERE event_id = ? AND user_id = ? AND payment_status = ?";
 
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
 
             stm.setInt(1, eventId);
             stm.setInt(2, userId);
+            stm.setString(3, "PAID");
 
             ResultSet rs = stm.executeQuery();
             if (rs.next()) {

@@ -8,10 +8,12 @@ import com.ktpm.pojo.Event;
 import com.ktpm.pojo.JdbcUtils;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,9 +47,44 @@ public class EventServices {
                 String description = rs.getString("description");
                 boolean isActive = rs.getBoolean("is_active");
 
-                events.add(new Event(id, categoryId, name, locationId, startTime, endTime, availableTickets, price, imageUrl, description, isActive));
+                events.add(new Event(id, categoryId, name, locationId, startTime, endTime,
+                        availableTickets, price, imageUrl, description, isActive));
             }
         }
+        return events;
+    }
+
+    public ObservableList<Event> getEventsForTomorrow() throws SQLException {
+        ObservableList<Event> events = FXCollections.observableArrayList();
+
+        String sql = "SELECT * FROM event WHERE DATE(start_time) = ?";
+
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
+
+            LocalDate tomorrow = LocalDate.now().plusDays(1);
+            stm.setDate(1, Date.valueOf(tomorrow));
+
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int categoryId = rs.getInt("category_id");
+                String name = rs.getString("name");
+                int locationId = rs.getInt("location_id");
+                LocalDateTime startTime = rs.getTimestamp("start_time").toLocalDateTime();
+                LocalDateTime endTime = rs.getTimestamp("end_time").toLocalDateTime();
+                int availableTickets = rs.getInt("available_tickets");
+                BigDecimal price = rs.getBigDecimal("price");
+                String imageUrl = rs.getString("image_url");
+                String description = rs.getString("description");
+                boolean isActive = rs.getBoolean("is_active");
+
+                // Thêm sự kiện vào danh sách
+                events.add(new Event(id, categoryId, name, locationId, startTime, endTime,
+                        availableTickets, price, imageUrl, description, isActive));
+            }
+        }
+
         return events;
     }
 
@@ -138,12 +175,12 @@ public class EventServices {
         return false;
     }
 
-    public boolean setEventActive(int eventId, boolean isActive){
+    public boolean setEventActive(int eventId, boolean isActive) {
         String sql = "UPDATE event SET is_active = ? WHERE id = ?";
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
             stm.setBoolean(1, isActive);
             stm.setInt(2, eventId);
-            
+
             return stm.executeUpdate() > 0;
         } catch (SQLException ex) {
             ex.printStackTrace();
