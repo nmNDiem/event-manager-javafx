@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 
@@ -29,6 +30,8 @@ public class NotiController implements Initializable {
 
     @FXML
     FlowPane notiContainer;
+    @FXML
+    Label lbEmpty;
     NotiServices notiServices = new NotiServices();
     User user = Utils.getCurrentUser();
 
@@ -41,6 +44,13 @@ public class NotiController implements Initializable {
     public void loadNotis() {
         try {
             List<Notification> notiList = notiServices.getNotiByUserId(user.getId());
+            if (notiList.isEmpty()) {
+                lbEmpty.setManaged(true);
+                lbEmpty.setVisible(true);
+                return;
+            }
+            lbEmpty.setManaged(false);
+            lbEmpty.setVisible(false);
             for (Notification n : notiList) {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("NotiCard.fxml"));
 

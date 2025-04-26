@@ -5,3 +5,8 @@
 .scroll-pane {
     -fx-background-insets: 0;
 }
+
+.lb-empty {
+    -fx-font-size: 18;
+    -fx-text-fill: #1d1852;
+}
