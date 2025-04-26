@@ -1,0 +1,24 @@
+.btn-cate {
+    -fx-background-color: #e5e7f6;
+    -fx-background-radius: 15;
+    -fx-text-fill: #141140;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+    -fx-cursor: hand;
+}
+
+.btn-cate:hover {
+    -fx-background-color: #d1d8f5;
+    -fx-effect: dropshadow(gaussian, #d1d8f5, 10, 0.1, 1, 1);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+.flowpane-event-container {
+    -fx-background-color: #f8fafb;
+}
+
+.scroll-pane {
+    -fx-background-insets: 0;
+}

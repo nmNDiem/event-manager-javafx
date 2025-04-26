@@ -1,0 +1,20 @@
+.anchor-noti {
+    -fx-border-color: transparent transparent black transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+.lb-subject {
+    -fx-text-fill: #1d1852;
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+}
+
+.lb-message {
+    -fx-text-fill: #1d1852;
+    -fx-font-size: 14;
+}
+
+.lb-sent-at {
+    -fx-text-fill: #1d1852;
+    -fx-font-style: Italic;
+}

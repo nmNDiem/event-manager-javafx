@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" minWidth="-Infinity" prefHeight="120.0" prefWidth="1000.0" style="-fx-background-color: white;" styleClass="anchor-noti" stylesheets="@../../../styles/noti-card.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.ktpm.eventmanagerfx.NotiCardController">
+   <children>
+      <Label fx:id="lbSubject" layoutX="24.0" layoutY="14.0" styleClass="lb-subject" text="[Lễ hội Âm nhạc] Thông báo hủy sự kiện" />
+      <Label fx:id="lbSentAt" layoutX="833.0" layoutY="18.0" styleClass="lb-sent-at" text="2025-04-26 03:43:45" />
+      <Label fx:id="lbMessage" alignment="TOP_LEFT" layoutX="24.0" layoutY="40.0" prefHeight="70.0" prefWidth="960.0" styleClass="lb-message" text="Sự kiện 'Lễ hội Âm nhạc' sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn. Mọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất. Chúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn." wrapText="true">
+         <padding>
+            <Insets top="5.0" />
+         </padding></Label>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+   </padding>
+</AnchorPane>

@@ -11,9 +11,12 @@ import com.ktpm.pojo.Notification;
 import com.ktpm.pojo.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,20 +25,48 @@ import java.util.logging.Logger;
  * @author admin
  */
 public class NotiServices {
+
     LocationServices locaServices = new LocationServices();
+
+    public List<Notification> getNotiByUserId(int userId) {
+        List<Notification> notiList = new ArrayList<>();
+        String sql = "SELECT * FROM notification WHERE user_id = ? ORDER BY sent_at DESC";
+
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql);) {
+
+            stm.setInt(1, userId);
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                Notification n = new Notification();
+                n.setId(rs.getInt("id"));;
+                n.setEventId(rs.getInt("event_id"));
+                n.setUserId(rs.getInt("user_id"));
+                n.setSubject(rs.getString("subject"));
+                n.setMessage(rs.getString("message"));
+                n.setSentAt(rs.getTimestamp("sent_at").toLocalDateTime());
+                n.setType(rs.getString("type"));
+
+                notiList.add(n);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+        return notiList;
+    }
 
     public boolean sendReminderNoti(Event e, int userId) {
         String sql = "INSERT INTO notification (event_id, user_id, subject, message, sent_at, type) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql);) {
-            
+
             String startTime = Utils.formatDateTime(e.getStartTime());
             String location = locaServices.getLocationById(e.getLocationId()).getName();
             String subject = "[" + e.getName() + "] Nhắc nhở tham gia";
             String message = "Sự kiện '" + e.getName() + "' sẽ diễn ra vào "
                     + startTime + " (ngày mai) tại " + location
                     + ".\nHẹn gặp bạn vào ngày mai.";
-            
+
             stm.setInt(1, e.getId());
             stm.setInt(2, userId);
             stm.setString(3, subject);
@@ -54,14 +85,14 @@ public class NotiServices {
         String sql = "INSERT INTO notification (event_id, user_id, subject, message, sent_at, type) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql);) {
-            
+
             String newStartTime = Utils.formatDateTime(e.getStartTime());
             String newEndTime = Utils.formatDateTime(e.getEndTime());
             String subject = "[" + e.getName() + "] Thông báo thay đổi thời gian";
-            String message = "Thời gian tổ chức sự kiện '" + e.getName() + "' đã được thay đổi.\n"
+            String message = "Thời gian tổ chức sự kiện '" + e.getName() + "' đã được thay đổi."
                     + "\nThời gian mới: " + newStartTime + " đến " + newEndTime
                     + "\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.";
-            
+
             stm.setInt(1, e.getId());
             stm.setInt(2, userId);
             stm.setString(3, subject);
@@ -75,17 +106,17 @@ public class NotiServices {
         }
         return false;
     }
-    
+
     public boolean sendCancelNoti(Event e, int userId) {
         String sql = "INSERT INTO notification (event_id, user_id, subject, message, sent_at, type) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql);) {
-            
+
             String subject = "[" + e.getName() + "] Thông báo hủy sự kiện";
             String message = "Sự kiện '" + e.getName() + "' sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn."
                     + "\nMọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất."
                     + "\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.";
-            
+
             stm.setInt(1, e.getId());
             stm.setInt(2, userId);
             stm.setString(3, subject);

@@ -19,8 +19,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -32,59 +34,32 @@ import javafx.scene.shape.Rectangle;
  * @author admin
  */
 public class HomeController implements Initializable {
-
-    @FXML
-    HBox cateContainer;
-    @FXML
-    FlowPane eventContainer;
     @FXML
     Label lbHello;
-
-    CategoryServices cateServices = new CategoryServices();
-    EventServices eventServices = new EventServices();
+    @FXML AnchorPane mainContent;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lbHello.setText("Xin chào, " + Utils.getCurrentUser().getFullName() + "!");
-        loadCates();
-        loadEvents();
+        loadEventView();
+    }
+    
+    public void loadEventView() {
+        loadView("Event");
+    }
+    
+    public void loadNotiView() {
+        loadView("Noti");
     }
 
-    public void loadCates() {
+    public void loadView(String fxmlFile) {
         try {
-            ObservableList<Category> cates = cateServices.getCates();
-
-            for (Category c : cates) {
-                Button cateBtn = new Button(c.getName());
-
-                cateBtn.getStyleClass().add("btn-cate");
-                HBox.setMargin(cateBtn, new Insets(0, 0, 0, 20));
-
-                cateContainer.getChildren().add(cateBtn);
-            }
-        } catch (SQLException ex) {
+            Parent view = FXMLLoader.load(getClass().getResource(fxmlFile + ".fxml"));
+            mainContent.getChildren().setAll(view);
+        } catch (IOException ex) {
             Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
+            Utils.showAlert("Lỗi: Không thể mở màn hình này!");
         }
-    }
-
-    public void loadEvents() {
-        try {
-            ObservableList<Event> events = eventServices.getEvents();
-            for (Event e : events) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("EventCard.fxml"));
-
-                VBox eventCard = loader.load();
-                EventCardController controller = loader.getController();
-
-                controller.setEventData(e.getImageUrl(), e.getName(), e.getStartTime(), e.getPrice());
-                controller.setEvent(e);
-
-                eventContainer.getChildren().add(eventCard);
-            }
-        } catch (SQLException | IOException ex) {
-            Logger.getLogger(HomeController.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
     }
 
     @FXML

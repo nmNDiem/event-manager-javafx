@@ -1,0 +1,7 @@
+.flowpane-noti-container {
+    -fx-background-color: #f8fafb;
+}
+
+.scroll-pane {
+    -fx-background-insets: 0;
+}
