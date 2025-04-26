@@ -19,12 +19,12 @@
    <children>
       <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="190.0" styleClass="vbox-menu">
          <children>
-            <Label fx:id="lbHello" alignment="CENTER" contentDisplay="CENTER" styleClass="lb-hello" text="Xin chào, Admin!" textAlignment="CENTER" wrapText="true">
+            <Label fx:id="lbHello" alignment="CENTER" contentDisplay="CENTER" styleClass="lb-hello" text="Xin chào, Admin!" textAlignment="CENTER" textFill="#ffec7e" wrapText="true">
                <VBox.margin>
                   <Insets />
                </VBox.margin>
             </Label>
-            <Button fx:id="btnEvent" maxWidth="-Infinity" mnemonicParsing="false" onAction="#loadEventView" styleClass="btn-menu-item" text="Quản lý sự kiện" />
+            <Button fx:id="btnEvent" maxWidth="-Infinity" mnemonicParsing="false" onAction="#loadAdminEventView" styleClass="btn-menu-item" text="Quản lý sự kiện" />
             <Button fx:id="btnLocaion" maxWidth="-Infinity" mnemonicParsing="false" styleClass="btn-menu-item" text="Quản lý địa điểm" />
             <Button mnemonicParsing="false" onAction="#logoutAdminHander" styleClass="btn-logout" text="Đăng xuất">
                <graphic>
@@ -37,6 +37,6 @@
             </Button>
          </children>
       </VBox>
-      <AnchorPane fx:id="mainContent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1010.0" />
+      <AnchorPane fx:id="adminMainContent" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="640.0" prefWidth="1010.0" />
    </children>
 </HBox>

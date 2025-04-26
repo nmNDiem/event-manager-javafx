@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
 --
 -- Host: localhost    Database: eventdb
 -- ------------------------------------------------------
--- Server version	9.1.0
+-- Server version	8.0.35
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -74,7 +74,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ',1,'2025-04-10 09:00:00','2025-04-10 11:00:00',100,50000,'/images/event3.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.',1),(2,1,'Lễ hội Âm nhạc',2,'2025-05-01 18:00:00','2025-05-01 22:30:00',499,20000,'/images/event1.jpeg','Lễ hội âm nhạc là sự kiện sôi động, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.',1),(7,5,'Triển lãm tranh',3,'2025-05-04 08:30:00','2025-05-04 16:30:00',50,75000,'/images/event4.jpg','Triển lãm tranh là sự kiện trưng bày các tác phẩm hội họa của một hoặc nhiều nghệ sĩ nhằm giới thiệu đến công chúng, tôn vinh nghệ thuật và kết nối người xem với cảm xúc, thông điệp mà bức tranh truyền tải.',0),(10,5,'Hội chợ thương mại',2,'2025-05-10 07:30:00','2025-05-11 17:30:00',300,0,'/images/event5.png','Hội chợ thương mại là sự kiện quy tụ nhiều doanh nghiệp tham gia trưng bày, giới thiệu và quảng bá sản phẩm, dịch vụ đến khách hàng và đối tác. Đây là cơ hội để giao lưu, tìm kiếm cơ hội hợp tác, mở rộng thị trường và thúc đẩy hoạt động kinh doanh.',1);
+INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ',1,'2025-04-10 09:00:00','2025-04-10 11:00:00',100,50000,'/images/event3.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.',1),(2,1,'Lễ hội Âm nhạc',2,'2025-05-02 18:00:00','2025-05-02 22:30:00',499,20000,'/images/event1.jpeg','Lễ hội âm nhạc là sự kiện sôi động náo nhiệt, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.',1),(7,5,'Triển lãm tranh',3,'2025-05-04 08:30:00','2025-05-04 16:30:00',50,75000,'/images/event4.jpg','Triển lãm tranh là sự kiện trưng bày các tác phẩm hội họa của một hoặc nhiều nghệ sĩ nhằm giới thiệu đến công chúng, tôn vinh nghệ thuật và kết nối người xem với cảm xúc, thông điệp mà bức tranh truyền tải.',0),(10,5,'Hội chợ thương mại',2,'2025-05-10 07:30:00','2025-05-11 17:30:00',300,0,'/images/event5.png','Hội chợ thương mại là sự kiện quy tụ nhiều doanh nghiệp tham gia trưng bày, giới thiệu và quảng bá sản phẩm, dịch vụ đến khách hàng và đối tác. Đây là cơ hội để giao lưu, tìm kiếm cơ hội hợp tác, mở rộng thị trường và thúc đẩy hoạt động kinh doanh.',1);
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,13 +118,13 @@ CREATE TABLE `notification` (
   `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `sent_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `type` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `recipient_id` (`user_id`),
   KEY `notification_event_idx` (`event_id`),
   CONSTRAINT `noti_event` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`),
   CONSTRAINT `noti_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,37 +133,8 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (6,2,2,'[Lễ hội Âm nhạc] Thông báo thay đổi thời gian','Thời gian tổ chức sự kiện \'Lễ hội Âm nhạc\' đã được thay đổi.\n\nThời gian mới: 18:00 - 01/05/2025 đến 22:30 - 01/05/2025\nXin cảm ơn.','2025-04-26 03:43:45','TIME_CHANGED'),(7,2,3,'[Lễ hội Âm nhạc] Thông báo thay đổi thời gian','Thời gian tổ chức sự kiện \'Lễ hội Âm nhạc\' đã được thay đổi.\n\nThời gian mới: 18:00 - 01/05/2025 đến 22:30 - 01/05/2025\nXin cảm ơn.','2025-04-26 03:43:45','TIME_CHANGED'),(8,2,2,'[Lễ hội Âm nhạc] Thông báo hủy sự kiện','Sự kiện [Lễ hội Âm nhạc] sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn.\nMọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất.\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 04:43:25','CANCEL'),(9,2,3,'[Lễ hội Âm nhạc] Thông báo hủy sự kiện','Sự kiện [Lễ hội Âm nhạc] sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn.\nMọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất.\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 04:43:25','CANCEL');
+INSERT INTO `notification` VALUES (8,2,2,'[Lễ hội Âm nhạc] Thông báo hủy sự kiện','Sự kiện [Lễ hội Âm nhạc] sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn.\nMọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất.\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 04:43:25','CANCEL'),(9,2,3,'[Lễ hội Âm nhạc] Thông báo hủy sự kiện','Sự kiện [Lễ hội Âm nhạc] sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn.\nMọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất.\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 04:43:25','CANCEL'),(10,2,2,'[Lễ hội Âm nhạc] Thông báo thay đổi thời gian','Thời gian tổ chức sự kiện \'Lễ hội Âm nhạc\' đã được thay đổi.\nThời gian mới: 18:00 - 02/05/2025 đến 22:30 - 02/05/2025\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 20:23:28','CHANGE');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `payment`
---
-
-DROP TABLE IF EXISTS `payment`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `payment` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `registration_id` int NOT NULL,
-  `amount` decimal(15,0) NOT NULL,
-  `payment_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('SUCCESS','FAILED','REFUNDED') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'SUCCESS',
-  PRIMARY KEY (`id`),
-  KEY `registration_id` (`registration_id`),
-  CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `payment`
---
-
-LOCK TABLES `payment` WRITE;
-/*!40000 ALTER TABLE `payment` DISABLE KEYS */;
-INSERT INTO `payment` VALUES (1,1,50000,'2025-04-01 10:00:00','SUCCESS');
-/*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -214,7 +185,7 @@ CREATE TABLE `user` (
   `role` enum('ADMIN','USER') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'USER',
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,7 +194,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (1,'admin','0123456789','admin@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','ADMIN'),(2,'user1','0987654321','user1@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','USER'),(3,'user2','0909090909','user2@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','USER'),(10,'abc','123','abc@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','USER'),(11,'tester','0342974912','nhungvo@gmail.com','$2a$12$vUbE5zSwsusjOBPe70olbOlFaVPTDv6Ew2wQY3ABkICceaqOD6oMC','USER'),(12,'test1','0989374613','nhung@gmail.com','$2a$12$/m3ecIj5XFCmtV/tKOTeKO8g0fJa7PuK3vf9taWT9LLBoIcIwH69i','USER'),(16,'tester2','000','nhung1@gmail.com','$2a$12$gVMK9T0hld9TNc7E2ix3cO97OF3/VuMA4Xgkry1ZHbX4inKJmzXPm','USER'),(17,'test3','0485973582','hla','$2a$12$qIYRc8XT.KBebme33/uch.bJSeR5kSP20Si0JGzVMr5C/YstNjz.K','USER'),(18,'test4','0342974912','nhung2@gmail.com','$2a$12$uKNz0ab3vSXhtScvl.6lE.vzCfYkZjgBlgmtSj0zmWFzDgw8GhalO','USER');
+INSERT INTO `user` VALUES (1,'admin','0123456789','admin@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','ADMIN'),(2,'user1','0987654321','user1@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','USER'),(3,'user2','0909090909','user2@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','USER'),(10,'abc','123','abc@gmail.com','$2a$12$VV4QZId7xdSG0G7b9OluCuWZ.EgyNUFyFr4Pm6fQPIZPBi5xnueka','USER');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -236,4 +207,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-26 18:51:41
+-- Dump completed on 2025-04-26 20:28:18
