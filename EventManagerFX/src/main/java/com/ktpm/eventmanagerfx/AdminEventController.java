@@ -496,7 +496,7 @@ public class AdminEventController implements Initializable {
     public void sendChangeNoti(Event e) {
         List<Registration> regList = regServices.getRegsByEventId(e.getId(), "PAID");
         for (Registration r : regList) {
-            if (!notiServices.sendTimeChangedNoti(e, r.getUserId())) {
+            if (!notiServices.createTimeChangedNoti(e, r.getUserId())) {
                 Utils.showAlert("Xảy ra lỗi khi gửi thông báo thay đổi thời gian!");
                 return;
             }
@@ -507,7 +507,7 @@ public class AdminEventController implements Initializable {
     public void sendCancelNoti(Event e) {
         List<Registration> regList = regServices.getRegsByEventId(e.getId(), "PAID");
         for (Registration r : regList) {
-            if (!notiServices.sendCancelNoti(e, r.getUserId())) {
+            if (!notiServices.createCancelNoti(e, r.getUserId())) {
                 Utils.showAlert("Xảy ra lỗi khi gửi thông báo hủy sự kiện!");
                 return;
             }

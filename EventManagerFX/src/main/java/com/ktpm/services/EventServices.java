@@ -79,7 +79,6 @@ public class EventServices {
                 String description = rs.getString("description");
                 boolean isActive = rs.getBoolean("is_active");
 
-                // Thêm sự kiện vào danh sách
                 events.add(new Event(id, categoryId, name, locationId, startTime, endTime,
                         availableTickets, price, imageUrl, description, isActive));
             }

@@ -5,6 +5,7 @@
 package com.ktpm.eventmanagerfx;
 
 import com.ktpm.pojo.User;
+import com.ktpm.services.NotiServices;
 import com.ktpm.services.UserServices;
 import java.io.IOException;
 import java.net.URL;
@@ -26,6 +27,7 @@ public class LoginController implements Initializable {
     Button btnLogin;
 
     UserServices userServices = new UserServices();
+    NotiServices notiServices = new NotiServices();
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -59,6 +61,7 @@ public class LoginController implements Initializable {
                 App.setScene("AdminHome");
             } else {
                 App.setScene("Home");
+                notiServices.sendReminder(user.getId());
             }
         } else {
             Utils.showAlert("Email hoặc mật khẩu không đúng!");
