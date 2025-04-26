@@ -24,21 +24,21 @@ import javafx.scene.layout.AnchorPane;
 public class AdminHomeController implements Initializable {
     @FXML Button btnEvent;
     @FXML Button btnLocaion;
-    @FXML AnchorPane mainContent;
+    @FXML AnchorPane adminMainContent;
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        loadEventView();
+        loadAdminEventView();
     }    
     
-    public void loadEventView() {
+    public void loadAdminEventView() {
         loadView("AdminEvent");
     }
     
     public void loadView(String fxmlFile) {
         try {
             Parent view = FXMLLoader.load(getClass().getResource(fxmlFile + ".fxml"));
-            mainContent.getChildren().setAll(view);
+            adminMainContent.getChildren().setAll(view);
         } catch (IOException ex) {
             Logger.getLogger(AdminHomeController.class.getName()).log(Level.SEVERE, null, ex);
             Utils.showAlert("Lỗi: Không thể mở màn hình này!");

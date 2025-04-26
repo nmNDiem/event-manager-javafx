@@ -74,7 +74,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ',1,'2025-04-10 09:00:00','2025-04-10 11:00:00',100,50000,'/images/event3.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.',1),(2,1,'Lễ hội Âm nhạc',2,'2025-05-01 18:00:00','2025-05-01 22:30:00',499,20000,'/images/event1.jpeg','Lễ hội âm nhạc là sự kiện sôi động, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.',1),(7,5,'Triển lãm tranh',3,'2025-05-04 08:30:00','2025-05-04 16:30:00',50,75000,'/images/event4.jpg','Triển lãm tranh là sự kiện trưng bày các tác phẩm hội họa của một hoặc nhiều nghệ sĩ nhằm giới thiệu đến công chúng, tôn vinh nghệ thuật và kết nối người xem với cảm xúc, thông điệp mà bức tranh truyền tải.',0),(10,5,'Hội chợ thương mại',2,'2025-05-10 07:30:00','2025-05-11 17:30:00',300,0,'/images/event5.png','Hội chợ thương mại là sự kiện quy tụ nhiều doanh nghiệp tham gia trưng bày, giới thiệu và quảng bá sản phẩm, dịch vụ đến khách hàng và đối tác. Đây là cơ hội để giao lưu, tìm kiếm cơ hội hợp tác, mở rộng thị trường và thúc đẩy hoạt động kinh doanh.',1);
+INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ',1,'2025-04-10 09:00:00','2025-04-10 11:00:00',100,50000,'/images/event3.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.',1),(2,1,'Lễ hội Âm nhạc',2,'2025-05-02 18:00:00','2025-05-02 22:30:00',499,20000,'/images/event1.jpeg','Lễ hội âm nhạc là sự kiện sôi động náo nhiệt, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.',1),(7,5,'Triển lãm tranh',3,'2025-05-04 08:30:00','2025-05-04 16:30:00',50,75000,'/images/event4.jpg','Triển lãm tranh là sự kiện trưng bày các tác phẩm hội họa của một hoặc nhiều nghệ sĩ nhằm giới thiệu đến công chúng, tôn vinh nghệ thuật và kết nối người xem với cảm xúc, thông điệp mà bức tranh truyền tải.',0),(10,5,'Hội chợ thương mại',2,'2025-05-10 07:30:00','2025-05-11 17:30:00',300,0,'/images/event5.png','Hội chợ thương mại là sự kiện quy tụ nhiều doanh nghiệp tham gia trưng bày, giới thiệu và quảng bá sản phẩm, dịch vụ đến khách hàng và đối tác. Đây là cơ hội để giao lưu, tìm kiếm cơ hội hợp tác, mở rộng thị trường và thúc đẩy hoạt động kinh doanh.',1);
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,7 +124,7 @@ CREATE TABLE `notification` (
   KEY `notification_event_idx` (`event_id`),
   CONSTRAINT `noti_event` FOREIGN KEY (`event_id`) REFERENCES `event` (`id`),
   CONSTRAINT `noti_user` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +133,7 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (6,2,2,'[Lễ hội Âm nhạc] Thông báo thay đổi thời gian','Thời gian tổ chức sự kiện \'Lễ hội Âm nhạc\' đã được thay đổi.\n\nThời gian mới: 18:00 - 01/05/2025 đến 22:30 - 01/05/2025\nXin cảm ơn.','2025-04-26 03:43:45','TIME_CHANGED'),(7,2,3,'[Lễ hội Âm nhạc] Thông báo thay đổi thời gian','Thời gian tổ chức sự kiện \'Lễ hội Âm nhạc\' đã được thay đổi.\n\nThời gian mới: 18:00 - 01/05/2025 đến 22:30 - 01/05/2025\nXin cảm ơn.','2025-04-26 03:43:45','TIME_CHANGED'),(8,2,2,'[Lễ hội Âm nhạc] Thông báo hủy sự kiện','Sự kiện [Lễ hội Âm nhạc] sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn.\nMọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất.\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 04:43:25','CANCEL'),(9,2,3,'[Lễ hội Âm nhạc] Thông báo hủy sự kiện','Sự kiện [Lễ hội Âm nhạc] sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn.\nMọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất.\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 04:43:25','CANCEL');
+INSERT INTO `notification` VALUES (8,2,2,'[Lễ hội Âm nhạc] Thông báo hủy sự kiện','Sự kiện [Lễ hội Âm nhạc] sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn.\nMọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất.\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 04:43:25','CANCEL'),(9,2,3,'[Lễ hội Âm nhạc] Thông báo hủy sự kiện','Sự kiện [Lễ hội Âm nhạc] sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn.\nMọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất.\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 04:43:25','CANCEL'),(10,2,2,'[Lễ hội Âm nhạc] Thông báo thay đổi thời gian','Thời gian tổ chức sự kiện \'Lễ hội Âm nhạc\' đã được thay đổi.\nThời gian mới: 18:00 - 02/05/2025 đến 22:30 - 02/05/2025\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 20:23:28','CHANGE');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,4 +207,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-26  7:50:08
+-- Dump completed on 2025-04-26 20:28:18
