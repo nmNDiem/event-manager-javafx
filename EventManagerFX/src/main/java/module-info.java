@@ -8,4 +8,6 @@ module com.ktpm.eventmanagerfx {
     opens com.ktpm.eventmanagerfx to javafx.fxml;
     opens com.ktpm.pojo to javafx.base;
     exports com.ktpm.eventmanagerfx;
+    exports com.ktpm.services;
+    exports com.ktpm.pojo;
 }

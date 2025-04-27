@@ -147,8 +147,15 @@ public class EventServices {
         }
         return false;
     }
+    
+    public boolean isStartDateAfterNow(LocalDate startDate) {
+        if (startDate.isAfter(LocalDate.now())) {
+            return true;
+        }
+        return false;
+    }
 
-    public boolean isEventTimeConflict(int eventId, int locationId, LocalDateTime startTime, LocalDateTime endTime) {
+    public boolean isEventLocationTimeConflict(int eventId, int locationId, LocalDateTime startTime, LocalDateTime endTime) {
         String sql = "SELECT COUNT(*) FROM event WHERE location_id = ? "
                 // loại trừ chính event hiện tại (khi sửa),
                 // nếu thêm mới thì set eventId = 0 (vì không có eventId nào là 0)

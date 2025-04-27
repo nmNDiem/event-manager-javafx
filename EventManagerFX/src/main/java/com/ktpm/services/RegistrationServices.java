@@ -70,9 +70,9 @@ public class RegistrationServices {
 
     public boolean hasTimeConflict(int userId, LocalDateTime newStart, LocalDateTime newEnd) {
         String sql = "SELECT COUNT(*) "
-                + "FROM event_registration er "
-                + "JOIN event e ON er.event_id = e.id "
-                + "WHERE er.user_id = ? "
+                + "FROM registration r "
+                + "JOIN event e ON r.event_id = e.id "
+                + "WHERE r.user_id = ? "
                 + "AND ("
                 + "(? BETWEEN e.start_time AND e.end_time) "
                 + "OR (? BETWEEN e.start_time AND e.end_time) "
@@ -95,6 +95,10 @@ public class RegistrationServices {
         }
 
         return false;
+    }
+    
+    public boolean hasAvailableTickets(Event event) {
+        return event.getAvailableTickets() > 0;
     }
 
     public List<Registration> getRegsByEventId(int eventId, String paymentStatus) {

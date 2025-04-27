@@ -354,7 +354,7 @@ public class AdminEventController implements Initializable {
         }
 
         // Kiểm tra trùng địa điểm và giờ
-        if (eventServices.isEventTimeConflict(0, location.getId(), startDatetime, endDateTime)) {
+        if (eventServices.isEventLocationTimeConflict(0, location.getId(), startDatetime, endDateTime)) {
             Utils.showAlert("Lỗi: Trùng địa điểm và giờ với sự kiện khác!");
             return;
         }
@@ -428,14 +428,14 @@ public class AdminEventController implements Initializable {
         LocalDateTime startDatetime = LocalDateTime.of(startDate, startTime);
         LocalDateTime endDateTime = LocalDateTime.of(endDate, endTime);
         // Kiểm tra ngày tổ chức < ngày hiện tại
-        if (startDatePk.getValue().isBefore(LocalDate.now())) {
+        if (!eventServices.isStartDateAfterNow(startDatePk.getValue())) {
             Utils.showAlert("Ngày tổ chức phải lớn hơn ngày hiện tại!");
             return;
         }
 
         int eventId = Integer.parseInt(id);
         // Kiểm tra trùng địa điểm và giờ
-        if (eventServices.isEventTimeConflict(eventId, location.getId(), startDatetime, endDateTime)) {
+        if (eventServices.isEventLocationTimeConflict(eventId, location.getId(), startDatetime, endDateTime)) {
             Utils.showAlert("Lỗi: Trùng địa điểm và giờ với sự kiện khác!");
             return;
         }
