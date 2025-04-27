@@ -25,7 +25,6 @@
                </VBox.margin>
             </Label>
             <Button fx:id="btnEvent" maxWidth="-Infinity" mnemonicParsing="false" onAction="#loadAdminEventView" styleClass="btn-menu-item" text="Quản lý sự kiện" />
-            <Button fx:id="btnLocaion" maxWidth="-Infinity" mnemonicParsing="false" styleClass="btn-menu-item" text="Quản lý địa điểm" />
             <Button mnemonicParsing="false" onAction="#logoutAdminHander" styleClass="btn-logout" text="Đăng xuất">
                <graphic>
                   <ImageView fitHeight="13.0" fitWidth="13.0" pickOnBounds="true" preserveRatio="true">

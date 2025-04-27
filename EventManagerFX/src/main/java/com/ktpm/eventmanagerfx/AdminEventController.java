@@ -442,7 +442,7 @@ public class AdminEventController implements Initializable {
 
         int availableTickets = Integer.parseInt(tickets);
         // Kiểm tra số lượng khách không vượt quá sức chứa địa điểm
-        if (availableTickets > location.getCapacity()) {
+        if (!eventServices.checkTicketLimit(availableTickets, location)) {
             Utils.showAlert("Số lượng khách không được vượt quá sức chứa địa điểm!");
             return;
         }

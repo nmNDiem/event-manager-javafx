@@ -83,25 +83,21 @@ public class EventCardController implements Initializable {
     }
 
     public boolean canRegister(Event event, User currentUser) {
-        // - Hết vé
         if (!regisService.hasAvailableTickets(event)) {
             Utils.showAlert("Sự kiện đã hết vé!");
             return false;
         }
 
-        // - Đã đky sự kiện này
         if (regisService.isUserRegistered(event.getId(), currentUser.getId())) {
             Utils.showAlert("Bạn đã đăng ký sự kiện này trước đó rồi!");
             return false;
         }
         
-        // - Không thể đky trước thời gian bắt đầu < 60p
         if (LocalDateTime.now().isAfter(event.getStartTime().minusMinutes(60))) {
             Utils.showAlert("Không thể đăng ký. Sự kiện sẽ bắt đầu trong vòng 60 phút nũa.");
             return false;
         }
 
-        // - Trùng giờ với sự kiện khác đã đky
         if (regisService.hasTimeConflict(currentUser.getId(), event.getStartTime(), event.getEndTime())) {
             Utils.showAlert("Bạn đã đăng ký sự kiện khác vào thời gian này!");
             return false;
