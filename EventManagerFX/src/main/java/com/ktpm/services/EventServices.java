@@ -6,6 +6,7 @@ package com.ktpm.services;
 
 import com.ktpm.pojo.Event;
 import com.ktpm.pojo.JdbcUtils;
+import com.ktpm.pojo.Location;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.Date;
@@ -85,6 +86,37 @@ public class EventServices {
         }
 
         return events;
+    }
+    
+    public Event getEventById(int eventId) throws SQLException {
+        Event event = null;
+        String sql = "SELECT * FROM event WHERE id = ?";
+
+        try (Connection conn = JdbcUtils.getConn(); PreparedStatement stm = conn.prepareStatement(sql)) {
+
+            stm.setInt(1, eventId);
+
+            ResultSet rs = stm.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                int categoryId = rs.getInt("category_id");
+                String name = rs.getString("name");
+                int locationId = rs.getInt("location_id");
+                LocalDateTime startTime = rs.getTimestamp("start_time").toLocalDateTime();
+                LocalDateTime endTime = rs.getTimestamp("end_time").toLocalDateTime();
+                int availableTickets = rs.getInt("available_tickets");
+                BigDecimal price = rs.getBigDecimal("price");
+                String imageUrl = rs.getString("image_url");
+                String description = rs.getString("description");
+                boolean isActive = rs.getBoolean("is_active");
+
+                event = new Event(id, categoryId, name, locationId, startTime, endTime,
+                        availableTickets, price, imageUrl, description, isActive);
+            }
+        }
+
+        return event;
     }
 
     public boolean addEvent(Event e) {
@@ -177,6 +209,13 @@ public class EventServices {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return false;
+    }
+    
+    public boolean checkTicketLimit(int tickets, Location location) {
+        if (tickets < location.getCapacity()) {
+            return true;
         }
         return false;
     }

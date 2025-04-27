@@ -2,6 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
+import com.ktpm.pojo.Location;
 import com.ktpm.services.EventServices;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -95,5 +96,34 @@ public class TestEventServices {
         Assertions.assertTrue(result);
     }
     
+    // ========= Test số lượng khách không vượt quá sức chứa địa điểm.
+    @Test
+    public void testTicketLimit_less() {
+        Location location = new Location();
+        location.setCapacity(100);
+        
+        boolean result = s.checkTicketLimit(90, location);
+        
+        Assertions.assertTrue(result);
+    }
     
+    @Test
+    public void testTicketLimit_more() {
+        Location location = new Location();
+        location.setCapacity(100);
+        
+        boolean result = s.checkTicketLimit(150, location);
+        
+        Assertions.assertFalse(result);
+    }
+    
+    @Test
+    public void testTicketLimit_same() {
+        Location location = new Location();
+        location.setCapacity(100);
+        
+        boolean result = s.checkTicketLimit(100, location);
+        
+        Assertions.assertFalse(result);
+    }
 }
