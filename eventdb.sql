@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.34, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.40, for Win64 (x86_64)
 --
 -- Host: localhost    Database: eventdb
 -- ------------------------------------------------------
--- Server version	8.0.35
+-- Server version	9.1.0
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -65,7 +65,7 @@ CREATE TABLE `event` (
   KEY `category_id` (`category_id`),
   CONSTRAINT `event_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL,
   CONSTRAINT `event_location` FOREIGN KEY (`location_id`) REFERENCES `location` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -74,7 +74,7 @@ CREATE TABLE `event` (
 
 LOCK TABLES `event` WRITE;
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
-INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ',1,'2025-04-10 09:00:00','2025-04-10 11:00:00',100,50000,'/images/event3.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.',1),(2,1,'Lễ hội Âm nhạc',2,'2025-05-02 18:00:00','2025-05-02 22:30:00',499,20000,'/images/event1.jpeg','Lễ hội âm nhạc là sự kiện sôi động náo nhiệt, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.',1),(7,5,'Triển lãm tranh',3,'2025-05-04 08:30:00','2025-05-04 16:30:00',50,75000,'/images/event4.jpg','Triển lãm tranh là sự kiện trưng bày các tác phẩm hội họa của một hoặc nhiều nghệ sĩ nhằm giới thiệu đến công chúng, tôn vinh nghệ thuật và kết nối người xem với cảm xúc, thông điệp mà bức tranh truyền tải.',0),(10,5,'Hội chợ thương mại',2,'2025-04-28 07:30:00','2025-04-29 17:30:00',299,0,'/images/event5.png','Hội chợ thương mại là sự kiện quy tụ nhiều doanh nghiệp tham gia trưng bày, giới thiệu và quảng bá sản phẩm, dịch vụ đến khách hàng và đối tác. Đây là cơ hội để giao lưu, tìm kiếm cơ hội hợp tác, mở rộng thị trường và thúc đẩy hoạt động kinh doanh.',1);
+INSERT INTO `event` VALUES (1,3,'Hội thảo Công nghệ',1,'2025-04-10 09:00:00','2025-04-10 11:00:00',100,50000,'/images/event3.jpg','Hội thảo công nghệ là sự kiện chia sẻ kiến thức, xu hướng và giải pháp sáng tạo trong lĩnh vực công nghệ.',1),(2,1,'Lễ hội Âm nhạc',2,'2025-05-02 18:00:00','2025-05-02 22:30:00',499,20000,'/images/event1.jpeg','Lễ hội âm nhạc là sự kiện sôi động náo nhiệt, nơi khán giả thưởng thức các màn trình diễn trực tiếp của nhiều nghệ sĩ.',1),(7,5,'Triển lãm tranh',3,'2025-05-04 08:30:00','2025-05-04 16:30:00',50,75000,'/images/event4.jpg','Triển lãm tranh là sự kiện trưng bày các tác phẩm hội họa của một hoặc nhiều nghệ sĩ nhằm giới thiệu đến công chúng, tôn vinh nghệ thuật và kết nối người xem với cảm xúc, thông điệp mà bức tranh truyền tải.',0),(10,5,'Hội chợ thương mại',2,'2025-04-28 07:30:00','2025-04-29 17:30:00',299,0,'/images/event5.png','Hội chợ thương mại là sự kiện quy tụ nhiều doanh nghiệp tham gia trưng bày, giới thiệu và quảng bá sản phẩm, dịch vụ đến khách hàng và đối tác. Đây là cơ hội để giao lưu, tìm kiếm cơ hội hợp tác, mở rộng thị trường và thúc đẩy hoạt động kinh doanh.',1),(15,5,'Workshop vẽ tranh nghệ thuật',1,'2025-05-11 14:00:00','2025-05-11 16:30:00',20,30000,'/images/event6.jpg','Workshop vẽ tranh nghệ thuật là buổi học thực hành, nơi người tham gia được hướng dẫn vẽ tranh dưới sự chỉ dẫn của nghệ sĩ, học các kỹ thuật và phong cách nghệ thuật khác nhau, nhằm phát triển kỹ năng sáng tạo và thể hiện cảm xúc qua nghệ thuật.',1),(16,2,'Lễ khai mạc SEA Games',2,'2025-05-17 08:30:00','2025-05-15 06:00:00',10,250000,'/images/event7.jpg','Lễ khai mạc SEA Games là sự kiện mở đầu giải đấu thể thao Đông Nam Á, với diễu hành các đoàn vận động viên, màn trình diễn nghệ thuật và nghi thức tôn vinh văn hóa, tinh thần thể thao, cùng sự tham gia của các lãnh đạo và quan chức thể thao.',1);
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,7 +118,7 @@ CREATE TABLE `notification` (
   `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `sent_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `type` varchar(45) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(45) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `recipient_id` (`user_id`),
   KEY `notification_event_idx` (`event_id`),
@@ -135,6 +135,35 @@ LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
 INSERT INTO `notification` VALUES (8,2,2,'[Lễ hội Âm nhạc] Thông báo hủy sự kiện','Sự kiện [Lễ hội Âm nhạc] sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn.\nMọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất.\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 04:43:25','CANCEL'),(9,2,3,'[Lễ hội Âm nhạc] Thông báo hủy sự kiện','Sự kiện [Lễ hội Âm nhạc] sẽ được hủy bỏ vì lý do phát sinh ngoài ý muốn.\nMọi khoản phí sẽ được hoàn lại trong thời gian sớm nhất.\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 04:43:25','CANCEL'),(10,2,2,'[Lễ hội Âm nhạc] Thông báo thay đổi thời gian','Thời gian tổ chức sự kiện \'Lễ hội Âm nhạc\' đã được thay đổi.\nThời gian mới: 18:00 - 02/05/2025 đến 22:30 - 02/05/2025\nChúng tôi thành thật xin lỗi vì sự bất tiện này và chân thành cảm ơn sự ủng hộ của bạn.','2025-04-26 20:23:28','CHANGE'),(11,10,10,'[Hội chợ thương mại] Nhắc nhở tham gia','Sự kiện \'Hội chợ thương mại\' sẽ diễn ra vào 07:30 - 28/04/2025 (ngày mai) tại Sân vận động B.\nHẹn gặp bạn vào ngày mai.','2025-04-27 02:35:33','REMINDER');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `payment`
+--
+
+DROP TABLE IF EXISTS `payment`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `payment` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `registration_id` int NOT NULL,
+  `amount` decimal(15,0) NOT NULL,
+  `payment_date` datetime DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('SUCCESS','FAILED','REFUNDED') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'SUCCESS',
+  PRIMARY KEY (`id`),
+  KEY `registration_id` (`registration_id`),
+  CONSTRAINT `payment_ibfk_1` FOREIGN KEY (`registration_id`) REFERENCES `registration` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `payment`
+--
+
+LOCK TABLES `payment` WRITE;
+/*!40000 ALTER TABLE `payment` DISABLE KEYS */;
+INSERT INTO `payment` VALUES (1,1,50000,'2025-04-01 10:00:00','SUCCESS');
+/*!40000 ALTER TABLE `payment` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -207,4 +236,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-27  2:48:27
+-- Dump completed on 2025-04-27 15:43:52
