@@ -84,7 +84,7 @@ public class EventCardController implements Initializable {
 
     public boolean canRegister(Event event, User currentUser) {
         // - Hết vé
-        if (event.getAvailableTickets() <= 0) {
+        if (!regisService.hasAvailableTickets(event)) {
             Utils.showAlert("Sự kiện đã hết vé!");
             return false;
         }
